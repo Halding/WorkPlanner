@@ -14,6 +14,7 @@ public class EmployeeService : IEmployeeService
         _employeeRepository = employeeRepository;
     }
 
+    //Gets all employees in the list
     public List<Employee> GetAllEmployees()
     {
         return _employeeRepository.ReadAll();
