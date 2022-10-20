@@ -22,11 +22,11 @@ namespace WorkPlanner.Api.Controllers
 
 
         [HttpGet]
-        public ActionResult<Employee> ReadAll()
+        public async Task<ActionResult<Employee>> ReadAll()
         {
             try
             {
-                var result = _employeeService.GetAllEmployees();
+                var result = await _employeeService.GetAllEmployees();
                 return Ok(result);
             }
             catch (Exception e)
@@ -37,5 +37,11 @@ namespace WorkPlanner.Api.Controllers
             
         }
 
+        [HttpPost ("create")]
+        public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
+        {
+            var result = await _employeeService.CreateEmployee(employee);
+            return Ok(result);
+        }
     }
 }

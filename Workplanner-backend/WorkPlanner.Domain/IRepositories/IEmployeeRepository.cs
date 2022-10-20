@@ -4,5 +4,7 @@ namespace Workplanner_Domain.IRepositories;
 
 public interface IEmployeeRepository
 {
-    List<Employee> ReadAll();
+    Task<List<Employee>> ReadAll();
+
+    Task<Employee> PostEmployee(Employee employee);
 }
