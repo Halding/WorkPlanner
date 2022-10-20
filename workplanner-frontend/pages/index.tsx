@@ -1,7 +1,8 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import TextArea1 from "../components/TextArea1";
+
+import TestAll from "../components/TestAll";
 
 const Home: NextPage = ({}) => {
 
@@ -14,7 +15,9 @@ const Home: NextPage = ({}) => {
         <title>Workplanner 1.0</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-     <TextArea1></TextArea1>
+
+
+        <TestAll></TestAll>
 
     </div>
   )
