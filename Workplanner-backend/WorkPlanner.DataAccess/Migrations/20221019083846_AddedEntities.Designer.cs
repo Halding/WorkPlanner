@@ -12,8 +12,8 @@ using Workplanner_DataAccess;
 namespace Workplanner_DataAccess.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20221017114844_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20221019083846_AddedEntities")]
+    partial class AddedEntities
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,24 +24,7 @@ namespace Workplanner_DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Workplanner_Core.Models.Department", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("DepartmentName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Department");
-                });
-
-            modelBuilder.Entity("Workplanner_Core.Models.Employee", b =>
+            modelBuilder.Entity("Workplanner_DataAccess.Entities.EmployeeEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -63,11 +46,9 @@ namespace Workplanner_DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("PasswordHash")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<byte[]>("PasswordSalt")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")
                         .IsRequired()
@@ -75,30 +56,32 @@ namespace Workplanner_DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId");
-
                     b.ToTable("Employees");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            EmployeeNumber = 1,
+                            DepartmentId = 2,
+                            EmployeeNumber = 1001,
                             FirstName = "Peter",
                             LastName = "Jensen",
+                            Password = "Password123",
                             Role = "User"
                         },
                         new
                         {
                             Id = 2,
-                            EmployeeNumber = 2,
+                            DepartmentId = 1,
+                            EmployeeNumber = 1000,
                             FirstName = "Hans",
                             LastName = "Peter",
+                            Password = "Password123",
                             Role = "Admin"
                         });
                 });
 
-            modelBuilder.Entity("Workplanner_Core.Models.Shift", b =>
+            modelBuilder.Entity("Workplanner_DataAccess.Entities.ShiftEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -127,15 +110,6 @@ namespace Workplanner_DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Shifts");
-                });
-
-            modelBuilder.Entity("Workplanner_Core.Models.Employee", b =>
-                {
-                    b.HasOne("Workplanner_Core.Models.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId");
-
-                    b.Navigation("Department");
                 });
 #pragma warning restore 612, 618
         }

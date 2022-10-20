@@ -4,7 +4,7 @@ namespace Workplanner_Core.IServices;
 
 public interface IEmployeeService
 {
-    List<Employee> GetAllEmployees();
-    
+    Task<List<Employee>> GetAllEmployees();
 
+    Task<Employee> CreateEmployee(Employee employee);
 }
