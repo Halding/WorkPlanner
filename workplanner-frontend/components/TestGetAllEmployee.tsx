@@ -7,7 +7,7 @@ import axios from "axios";
 function TestGetAllEmployee() {
 
     const {data, isLoading, isError} = useQuery<Employee[], Error>(["employee"], () => axios
-        .get("https://localhost:7293/api/employee")
+        .get("https://localhost:44396/api/employee")
         .then((res) => res.data));
 
 

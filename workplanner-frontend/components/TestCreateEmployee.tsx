@@ -12,7 +12,7 @@ import {
 function TestCreateEmployee() {
 
     const createEmployee = async (data : Employee) => {
-        const { data: response } = await axios.post("https://localhost:7293/api/employee/create", data);
+        const { data: response } = await axios.post("https://localhost:44396/api/employee/create", data);
         return response.data;
     };
 
