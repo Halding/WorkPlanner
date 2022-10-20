@@ -13,7 +13,7 @@ public class EmployeeRepository : IEmployeeRepository
     {
         _ctx = ctx;
     }
-    
+
     public async Task<List<Employee>> ReadAll()
     {
         return await _ctx.Employees.Select(e => new Employee
@@ -41,5 +41,35 @@ public class EmployeeRepository : IEmployeeRepository
         await _ctx.SaveChangesAsync();
         return employee;
     }
-    
+
+    public async Task<Employee> PatchEmployee(Employee employee)
+    {
+        var foundEmployee = await _ctx.Employees.FirstOrDefaultAsync(e => e.Id == employee.Id);
+        if (foundEmployee != null)
+        {
+            foundEmployee.FirstName = employee.FirstName;
+            foundEmployee.LastName = employee.LastName;
+            foundEmployee.Password = employee.Password;
+            foundEmployee.Role = employee.Role;
+            foundEmployee.DepartmentId = employee.DepartmentId;
+
+            await _ctx.SaveChangesAsync();
+            return employee;
+        }
+
+        return null;
+    }
+
+    public async Task<Employee> ReadEmployeeById(int id)
+    {
+        return await _ctx.Employees.Select(e => new Employee
+        {
+            Id = e.Id,
+            FirstName = e.FirstName,
+            LastName = e.LastName,
+            EmployeeNumber = e.EmployeeNumber,
+            Role = e.Role,
+            DepartmentId = e.DepartmentId
+        }).FirstOrDefaultAsync(e => e.Id == id) ?? throw new InvalidOperationException();
+    }
 }
