@@ -11,13 +11,25 @@ public class MainDbContext : DbContext
         
     }
     public DbSet<EmployeeEntity> Employees { get; set; }
+    public DbSet<DepartmentEntity> Departments { get; set; }
     public DbSet<ShiftEntity> Shifts { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<EmployeeEntity>().ToTable("Employees");
         modelBuilder.Entity<EmployeeEntity>().Property(x => x.EmployeeNumber).ValueGeneratedOnAddOrUpdate();
-        
+        modelBuilder.Entity<DepartmentEntity>().HasData(
+            new DepartmentEntity
+            {
+                Id = 1,
+                DepartmentName = "Elektronik"
+            },
+            new DepartmentEntity
+            {
+                Id = 2,
+                DepartmentName = "Vareudlevering"
+            }
+        );
         modelBuilder.Entity<EmployeeEntity>().HasData(
         new EmployeeEntity
         {
