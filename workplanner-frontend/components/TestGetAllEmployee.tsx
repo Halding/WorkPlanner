@@ -7,23 +7,40 @@ import axios from "axios";
 function TestGetAllEmployee() {
 
     const [employee, setEmployee] = useState<Employee>();
+    const [deletedEmployee, setDeletedEmployee] = useState<Employee>();
 
+    // getall
     const {data, isLoading, isError} = useQuery<Employee[], Error>(["employee"], () => axios
         .get("https://localhost:7293/api/employee")
         .then((res) => res.data));
 
 
     const getEmployeeById = async (data: Employee) => {
-        const {data: response} = await axios.get(`https://localhost:7293/api/employee/${data.id}`);
-        console.log(response);
-        setEmployee(response)
-        return response
+        const {data: employeeGettedById} = await axios.get(`https://localhost:7293/api/employee/${data.id}`);
+        console.log(employeeGettedById);
+        setEmployee(employeeGettedById)
+
 
     };
+
+    const deleteEmployeeById = async (data: Employee) => {
+        const {data: employeeDeletedById} = await axios.delete(`https://localhost:7293/api/employee/delete/${data.id}`);
+        console.log(employeeDeletedById)
+        setDeletedEmployee(employeeDeletedById);
+    }
+
+    const getAllEmployee = async () => {
+        const {data, isLoading, isError} = useQuery<Employee[], Error>(["employee"], () => axios
+            .get("https://localhost:7293/api/employee")
+            .then((res) => res.data));
+    }
+
+
 
     useEffect( () => {
         getEmployeeById(testEmployee)
     }, []);
+
 
 
 
@@ -32,7 +49,7 @@ function TestGetAllEmployee() {
     }
 
     const testEmployee: Employee = {
-        id: 7,
+        id: 8,
         firstName: "Svend",
         lastName: "123",
         departmentId: null,
@@ -81,6 +98,23 @@ function TestGetAllEmployee() {
 
                 <label>
                     test {employee?.id}
+                </label>
+
+                <button
+                    onClick={() => {
+                        itWorks();
+                        deleteEmployeeById(testEmployee)
+                    }}
+                    type="button"
+                    className="inline-flex justify-center w-full rounded-md border border-transparent m-2
+                                    shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none
+                                    focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm disabled:bg-gray-300
+                                    disabled:cursor-not-allowed hover:disabled:border-gray-300"
+                >
+                    Delete Employee by Id
+                </button>
+                <label>
+                    test {deletedEmployee?.firstName} {deletedEmployee?.id}
                 </label>
 
             </div>
