@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Employee} from "../models/Employee";
 import axios from "axios";
 import {
@@ -8,21 +8,45 @@ import {
     QueryClient,
     QueryClientProvider,
 } from '@tanstack/react-query'
+import {Simulate} from "react-dom/test-utils";
+import input = Simulate.input;
 
 function TestCreateEmployee() {
 
-    const createEmployee = async (data : Employee) => {
-        const { data: response } = await axios.post("https://localhost:44396/api/employee/create", data);
+    const [employee, setEmployee] = useState([])
+
+    useEffect(() => {
+        return () => {
+
+        };
+    }, [employee]);
+
+
+    const createEmployee = async (data: Employee) => {
+        const {data: response} = await axios.post("https://localhost:7293/api/employee/create", data);
+        console.log(data)
         return response.data;
     };
 
-const testEmplyee = {
-    firstName: "Svend",
-    lastName: "Halding",
-    departmentId: null,
-    role: "Superadmin",
-    password: "123admin"
-}
+    const updateEmployee = async (data: Employee) => {
+        const {data: response} = await axios.patch(`https://localhost:7293/api/employee/update/${data.id}`, data);
+        console.log(data)
+        return response.data;
+    };
+
+    function itWorks() {
+        console.log("It works")
+    }
+
+
+    const testEmployee = {
+        id: 7,
+        firstName: "Svend",
+        lastName: "123",
+        departmentId: null,
+        role: "123",
+        password: "123"
+    }
 
     return (
         <form className="w-full max-w-lg">
@@ -101,7 +125,7 @@ const testEmplyee = {
                         id="grid-zip" type="text" placeholder="90210"/>
                 </div>
                 <button
-                    onClick={() => createEmployee(testEmplyee)}
+                    onClick={() => {itWorks(); createEmployee(testEmployee)}}
                     type="button"
                     className="inline-flex justify-center w-full rounded-md border border-transparent m-2
                                     shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none
@@ -109,6 +133,19 @@ const testEmplyee = {
                                     disabled:cursor-not-allowed hover:disabled:border-gray-300"
                 >
                     PostEmployee
+                </button>
+                <button
+                    onClick={() => {
+                        itWorks();
+                        updateEmployee(testEmployee)
+                    }}
+                    type="button"
+                    className="inline-flex justify-center w-full rounded-md border border-transparent m-2
+                                    shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none
+                                    focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm disabled:bg-gray-300
+                                    disabled:cursor-not-allowed hover:disabled:border-gray-300"
+                >
+                    Update Svend :D
                 </button>
             </div>
         </form>

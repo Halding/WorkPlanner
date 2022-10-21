@@ -34,26 +34,37 @@ namespace WorkPlanner.Api.Controllers
                 Console.WriteLine(e);
                 throw;
             }
+            
         }
-        //Lav try catch, error handling?
-        [HttpPost("Create")]
+        
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Employee>> GetEmployeeById(int id)
+        {
+            var result = await _employeeService.GetEmployeeById(id);
+
+            return Ok(result);
+        }
+
+        [HttpPost ("create")]
         public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
         {
             var result = await _employeeService.CreateEmployee(employee);
             return Ok(result);
         }
-        //Lav try catch, error handling?
-        [HttpPatch("Update/{id}")]
+        
+        [HttpPatch("update/{id}")]
         public async Task<ActionResult<Employee>> PatchEmployee(Employee employee)
         {
             var result = await _employeeService.UpdateEmployee(employee);
+
             return Ok(result);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Employee>> ReadEmployeeById(int id)
+        [HttpDelete("delete/{id}")]
+        public async Task<ActionResult<Employee>> DeleteEmployeeById(int id)
         {
-            var result = await _employeeService.GetEmployeeById(id);
+            var result = await _employeeService.DeleteEmployeeById(id);
+
             return Ok(result);
         }
     }

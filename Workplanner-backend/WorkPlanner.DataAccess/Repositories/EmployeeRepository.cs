@@ -21,8 +21,8 @@ public class EmployeeRepository : IEmployeeRepository
             Id = e.Id,
             EmployeeNumber = e.EmployeeNumber,
             DepartmentId = e.DepartmentId,
-            FirstName = e.FirstName,
             Role = e.Role,
+            FirstName = e.FirstName,
             LastName = e.LastName
         }).ToListAsync();
     }
@@ -33,25 +33,27 @@ public class EmployeeRepository : IEmployeeRepository
         {
             FirstName = employee.FirstName,
             LastName = employee.LastName,
+            Role = employee.Role,
             DepartmentId = employee.DepartmentId,
-            Password = employee.Password,
-            Role = employee.Role
+            Password = employee.Password
         };
         _ctx.Employees.Add(newEmployee);
         await _ctx.SaveChangesAsync();
+
         return employee;
     }
 
     public async Task<Employee> PatchEmployee(Employee employee)
     {
-        var foundEmployee = await _ctx.Employees.FirstOrDefaultAsync(e => e.Id == employee.Id);
-        if (foundEmployee != null)
+        var foundEmployeeEntity = await _ctx.Employees.FirstOrDefaultAsync(x => x.Id == employee.Id);
+
+        if (foundEmployeeEntity != null)
         {
-            foundEmployee.FirstName = employee.FirstName;
-            foundEmployee.LastName = employee.LastName;
-            foundEmployee.Password = employee.Password;
-            foundEmployee.Role = employee.Role;
-            foundEmployee.DepartmentId = employee.DepartmentId;
+            foundEmployeeEntity.FirstName = employee.FirstName;
+            foundEmployeeEntity.LastName = employee.LastName;
+            foundEmployeeEntity.DepartmentId = employee.DepartmentId;
+            foundEmployeeEntity.Role = employee.Role;
+            foundEmployeeEntity.Password = employee.Password;
 
             await _ctx.SaveChangesAsync();
             return employee;
@@ -60,16 +62,47 @@ public class EmployeeRepository : IEmployeeRepository
         return null;
     }
 
-    public async Task<Employee> ReadEmployeeById(int id)
+    public async Task<Employee> ReadByEmployeeById(int id)
     {
-        return await _ctx.Employees.Select(e => new Employee
+        var testEmployee = await _ctx.Employees.FindAsync(id);
+
+        if (testEmployee != null)
         {
-            Id = e.Id,
-            FirstName = e.FirstName,
-            LastName = e.LastName,
-            EmployeeNumber = e.EmployeeNumber,
-            Role = e.Role,
-            DepartmentId = e.DepartmentId
-        }).FirstOrDefaultAsync(e => e.Id == id) ?? throw new InvalidOperationException();
+            var newEmployee = new Employee
+            {
+                Id = testEmployee.Id,
+                FirstName = testEmployee.FirstName,
+                LastName = testEmployee.LastName,
+                DepartmentId = testEmployee.DepartmentId,
+                EmployeeNumber = testEmployee.EmployeeNumber,
+                Role = testEmployee.Role
+            };
+            return newEmployee;
+        }
+
+        return null;
+    }
+
+    public async Task<Employee> DeleteEmployeeId(int id)
+    {
+        var testEmployee = await _ctx.Employees.FindAsync(id);
+        if (testEmployee != null)
+        {
+            var newEmployee = new Employee
+            {
+                Id = testEmployee.Id,
+                FirstName = testEmployee.FirstName,
+                LastName = testEmployee.LastName,
+                DepartmentId = testEmployee.DepartmentId,
+                EmployeeNumber = testEmployee.EmployeeNumber,
+                Role = testEmployee.Role
+            };
+            
+            _ctx.Remove(testEmployee);
+            await _ctx.SaveChangesAsync();
+            return newEmployee;
+
+        }
+        return null;
     }
 }
