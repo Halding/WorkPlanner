@@ -16,7 +16,7 @@ public class EmployeeService : IEmployeeService
 
     public async Task<List<Employee>> GetAllEmployees()
     {
-        return await _employeeRepository.ReadAll();
+        return await _employeeRepository.ReadAllEmployee();
     }
 
     public async Task<Employee> CreateEmployee(Employee employee)

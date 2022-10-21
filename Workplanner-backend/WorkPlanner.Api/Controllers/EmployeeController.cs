@@ -22,7 +22,7 @@ namespace WorkPlanner.Api.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<Employee>> ReadAll()
+        public async Task<ActionResult<Employee>> ReadAllEmployee()
         {
             try
             {

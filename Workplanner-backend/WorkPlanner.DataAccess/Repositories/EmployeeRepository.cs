@@ -14,7 +14,7 @@ public class EmployeeRepository : IEmployeeRepository
         _ctx = ctx;
     }
 
-    public async Task<List<Employee>> ReadAll()
+    public async Task<List<Employee>> ReadAllEmployee()
     {
         return await _ctx.Employees.Select(e => new Employee
         {
