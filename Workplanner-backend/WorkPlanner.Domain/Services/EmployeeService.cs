@@ -23,4 +23,19 @@ public class EmployeeService : IEmployeeService
     {
          return await _employeeRepository.PostEmployee(employee);
     }
+
+    public async Task<Employee> UpdateEmployee(Employee employee)
+    {
+        return await _employeeRepository.PatchEmployee(employee);
+    }
+
+    public async Task<Employee> GetEmployeeById(int id)
+    {
+        return await _employeeRepository.ReadByEmployeeById(id);
+    }
+
+    public Task<Employee> DeleteEmployeeById(int id)
+    {
+        return _employeeRepository.DeleteEmployeeId(id);
+    }
 }

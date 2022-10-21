@@ -8,5 +8,11 @@ public interface IEmployeeService
 
     Task<Employee> CreateEmployee(Employee employee);
 
+    Task<Employee> UpdateEmployee(Employee employee);
+
+    Task<Employee> GetEmployeeById(int id);
+
+    Task<Employee> DeleteEmployeeById(int id);
+
 
 }
