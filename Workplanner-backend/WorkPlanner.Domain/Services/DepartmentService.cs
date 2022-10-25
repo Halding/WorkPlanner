@@ -30,9 +30,9 @@ public class DepartmentService : IDepartmentService
         throw new NotImplementedException();
     }
 
-    public Task<Department> GetDepartmentById(int id)
+    public async Task<Department> GetDepartmentById(int id)
     {
-        throw new NotImplementedException();
+        return await _departmentRepository.ReadByDepartmentById(id);
     }
 
     public Task<Department> DeleteDepartmentById(int id)

@@ -10,4 +10,5 @@ public interface IDepartmentRepository
     Task<Department> PatchDepartment(Department department);
     Task<Department> ReadByDepartmentById(int id);
     Task<Department> DeleteDepartmentId(int id);
+    
 }

@@ -36,7 +36,20 @@ public class DepartmentRepository : IDepartmentRepository
 
     public async Task<Department> ReadByDepartmentById(int id)
     {
-        throw new NotImplementedException();
+        var foundDepartment = await _ctx.Departments.FindAsync(id);
+
+        if (foundDepartment != null)
+        {
+            var newDepartment = new Department
+            {
+                Id = foundDepartment.Id,
+                DepartmentName = foundDepartment.DepartmentName
+
+            };
+            return newDepartment;
+        }
+
+        return null;
     }
 
     public async Task<Department> DeleteDepartmentId(int id)

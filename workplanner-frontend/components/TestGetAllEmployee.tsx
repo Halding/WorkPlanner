@@ -16,9 +16,9 @@ function TestGetAllEmployee() {
 
 
     const getEmployeeById = async (data: Employee) => {
-        const {data: employeeGettedById} = await axios.get(`https://localhost:7293/api/employee/${data.id}`);
-        console.log(employeeGettedById);
-        setEmployee(employeeGettedById)
+        const {data: employeeGotById} = await axios.get(`https://localhost:7293/api/employee/${data.id}`);
+        console.log(employeeGotById);
+        setEmployee(employeeGotById)
 
 
     };

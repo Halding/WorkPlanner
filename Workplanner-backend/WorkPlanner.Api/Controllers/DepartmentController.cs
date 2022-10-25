@@ -38,6 +38,14 @@ namespace WorkPlanner.Api.Controllers
             
         }
         
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Department>> GetDepartmentById(int id)
+        {
+            var result = await _departmentService.GetDepartmentById(id);
+
+            return Ok(result);
+        }
+        
         
     }
 }
