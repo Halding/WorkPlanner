@@ -14,8 +14,15 @@ function TestDepartment() {
         .get("https://localhost:7293/api/department")
         .then((res) => res.data));
 
+    const createDepartment = async (data: Department) => {
+        const {data: createdDepartment} = await axios.post("https://localhost:7293/api/Department/create", data);
+        console.log(createdDepartment)
 
-    const deleteDepartmenteById = async (data: Department) => {
+        return createdDepartment.data
+    };
+
+
+    const deleteDepartmentById = async (data: Department) => {
         const {data: departmentDeletedById} = await axios.delete(`https://localhost:7293/api/Department/delete/${data.id}`);
         console.log(departmentDeletedById)
         setDepartment(departmentDeletedById);
@@ -42,9 +49,11 @@ function TestDepartment() {
 
     }, [department]);
 
+
+
     const testDepartment : Department = {
-        id: 2,
-        departmentName: "Kassen"
+        id: 8,
+        departmentName: "Bager"
     }
 
 
@@ -73,6 +82,21 @@ function TestDepartment() {
 
                     ))}
                 </div>
+
+                <button
+                    onClick={() => {
+
+                        createDepartment(testDepartment)
+                    }}
+                    type="button"
+                    className="inline-flex justify-center w-full rounded-md border border-transparent m-2
+                                    shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none
+                                    focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm disabled:bg-gray-300
+                                    disabled:cursor-not-allowed hover:disabled:border-gray-300"
+                >
+                    Create Department
+                </button>
+
 
                 <button
                     onClick={() => {
@@ -119,7 +143,7 @@ function TestDepartment() {
                 <button
                     onClick={() => {
 
-                        deleteDepartmenteById(testDepartment)
+                        deleteDepartmentById(testDepartment)
                     }}
                     type="button"
                     className="inline-flex justify-center w-full rounded-md border border-transparent m-2

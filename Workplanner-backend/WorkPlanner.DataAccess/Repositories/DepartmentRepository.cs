@@ -25,7 +25,15 @@ public class DepartmentRepository : IDepartmentRepository
 
     public async Task<Department> PostDepartment(Department department)
     {
-        throw new NotImplementedException();
+        var newDepartment = new DepartmentEntity
+        {
+            DepartmentName = department.DepartmentName
+        };
+
+         await _ctx.Departments.AddAsync(newDepartment);
+         await _ctx.SaveChangesAsync();
+
+         return department;
     }
 
     public async Task<Department> PatchDepartment(Department department)

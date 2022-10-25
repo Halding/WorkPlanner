@@ -22,7 +22,7 @@ public class DepartmentService : IDepartmentService
 
     public async Task<Department> CreateDepartment(Department department)
     {
-        throw new NotImplementedException();
+        return await _departmentRepository.PostDepartment(department);
     }
 
     public async Task<Department> UpdateDepartment(Department department)

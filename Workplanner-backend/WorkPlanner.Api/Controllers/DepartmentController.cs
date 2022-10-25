@@ -22,6 +22,13 @@ namespace WorkPlanner.Api.Controllers
         }
         
         
+        [HttpPost ("create")]
+        public async Task<ActionResult<Department>> PostDepartment(Department department)
+        {
+            var result = await _departmentService.CreateDepartment(department);
+            return Ok(result);
+        }
+        
         [HttpGet]
         public async Task<ActionResult<Department>> ReadAllDepartment()
         {
