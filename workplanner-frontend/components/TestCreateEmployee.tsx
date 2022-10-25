@@ -40,7 +40,7 @@ function TestCreateEmployee() {
 
 
     const testEmployee = {
-        id: 7,
+        id: 9,
         firstName: "Svend",
         lastName: "123",
         departmentId: null,

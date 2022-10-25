@@ -7,12 +7,13 @@ import {number} from "prop-types";
 
 function TestDepartment() {
 
-    const [department, setDepartment] = useState<Department>()
+        const [department, setDepartment] = useState<Department>()
 
 
     const {data, isLoading, isError} = useQuery<Department[], Error>(["department"], () => axios
         .get("https://localhost:7293/api/department")
         .then((res) => res.data));
+
 
 
     const getDepartmentById = async (data: Department) => {
@@ -22,13 +23,22 @@ function TestDepartment() {
 
     };
 
+    const updateDepartment = async (data: Department) => {
+        const {data: updatedDepartment} = await axios.patch(`https://localhost:7293/api/department/update/${data.id}`, data);
+        console.log(updatedDepartment)
+        setDepartment(updatedDepartment)
+        return updatedDepartment.data;
+    };
+
+
 
     useEffect(() => {
-        getDepartmentById(testDepartment)
-    }, []);
+
+
+    }, [department]);
 
     const testDepartment : Department = {
-        id: 3,
+        id: 2,
         departmentName: "Kassen"
     }
 
@@ -71,6 +81,27 @@ function TestDepartment() {
                                     disabled:cursor-not-allowed hover:disabled:border-gray-300"
                 >
                     Get Department by Id
+                </button>
+
+                <label>
+                    test {department?.id} {department?.departmentName}
+                </label>
+
+
+
+
+                <button
+                    onClick={() => {
+
+                        updateDepartment(testDepartment)
+                    }}
+                    type="button"
+                    className="inline-flex justify-center w-full rounded-md border border-transparent m-2
+                                    shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none
+                                    focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm disabled:bg-gray-300
+                                    disabled:cursor-not-allowed hover:disabled:border-gray-300"
+                >
+                    Update Department
                 </button>
 
                 <label>

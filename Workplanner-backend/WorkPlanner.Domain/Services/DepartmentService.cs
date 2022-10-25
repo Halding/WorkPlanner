@@ -20,14 +20,14 @@ public class DepartmentService : IDepartmentService
         return await _departmentRepository.ReadAllDepartment();
     }
 
-    public Task<Department> CreateDepartment(Department department)
+    public async Task<Department> CreateDepartment(Department department)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Department> UpdateDepartment(Department department)
+    public async Task<Department> UpdateDepartment(Department department)
     {
-        throw new NotImplementedException();
+        return await _departmentRepository.PatchDepartment(department);
     }
 
     public async Task<Department> GetDepartmentById(int id)
@@ -35,7 +35,7 @@ public class DepartmentService : IDepartmentService
         return await _departmentRepository.ReadByDepartmentById(id);
     }
 
-    public Task<Department> DeleteDepartmentById(int id)
+    public async Task<Department> DeleteDepartmentById(int id)
     {
         throw new NotImplementedException();
     }

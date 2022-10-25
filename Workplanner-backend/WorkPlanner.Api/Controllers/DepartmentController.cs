@@ -45,7 +45,15 @@ namespace WorkPlanner.Api.Controllers
 
             return Ok(result);
         }
-        
-        
+
+        [HttpPatch("update/{id}")]
+        public async Task<ActionResult<Department>> UpdateDepartment(Department department)
+        {
+            var result = await _departmentService.UpdateDepartment(department);
+
+            return Ok(result);
+        }
+
+
     }
 }
