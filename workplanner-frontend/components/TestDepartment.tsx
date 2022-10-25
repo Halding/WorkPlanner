@@ -15,6 +15,11 @@ function TestDepartment() {
         .then((res) => res.data));
 
 
+    const deleteDepartmenteById = async (data: Department) => {
+        const {data: departmentDeletedById} = await axios.delete(`https://localhost:7293/api/Department/delete/${data.id}`);
+        console.log(departmentDeletedById)
+        setDepartment(departmentDeletedById);
+    }
 
     const getDepartmentById = async (data: Department) => {
         const {data: departmentGotById} = await axios.get(`https://localhost:7293/api/department/${data.id}`);
@@ -107,6 +112,25 @@ function TestDepartment() {
                 <label>
                     test {department?.id} {department?.departmentName}
                 </label>
+
+
+
+
+                <button
+                    onClick={() => {
+
+                        deleteDepartmenteById(testDepartment)
+                    }}
+                    type="button"
+                    className="inline-flex justify-center w-full rounded-md border border-transparent m-2
+                                    shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none
+                                    focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm disabled:bg-gray-300
+                                    disabled:cursor-not-allowed hover:disabled:border-gray-300"
+                >
+                    Delete Department
+                </button>
+
+
 
             </div>
 

@@ -37,6 +37,6 @@ public class DepartmentService : IDepartmentService
 
     public async Task<Department> DeleteDepartmentById(int id)
     {
-        throw new NotImplementedException();
+        return await _departmentRepository.DeleteDepartmentId(id);
     }
 }

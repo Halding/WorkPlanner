@@ -53,6 +53,14 @@ namespace WorkPlanner.Api.Controllers
 
             return Ok(result);
         }
+        
+        [HttpDelete("delete/{id}")]
+        public async Task<ActionResult<Employee>> DeleteDepartmentById(int id)
+        {
+            var result = await _departmentService.DeleteDepartmentById(id);
+
+            return Ok(result);
+        }
 
 
     }

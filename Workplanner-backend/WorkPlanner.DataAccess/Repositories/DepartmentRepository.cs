@@ -13,7 +13,7 @@ public class DepartmentRepository : IDepartmentRepository
     {
         _ctx = ctx;
     }
-    
+
     public async Task<List<Department>> ReadAllDepartment()
     {
         return await _ctx.Departments.Select(d => new Department
@@ -21,8 +21,6 @@ public class DepartmentRepository : IDepartmentRepository
             Id = d.Id,
             DepartmentName = d.DepartmentName
         }).ToListAsync();
-
-
     }
 
     public async Task<Department> PostDepartment(Department department)
@@ -41,6 +39,7 @@ public class DepartmentRepository : IDepartmentRepository
             await _ctx.SaveChangesAsync();
             return department;
         }
+
         return null;
     }
 
@@ -54,7 +53,6 @@ public class DepartmentRepository : IDepartmentRepository
             {
                 Id = foundDepartment.Id,
                 DepartmentName = foundDepartment.DepartmentName
-
             };
             return newDepartment;
         }
@@ -64,6 +62,23 @@ public class DepartmentRepository : IDepartmentRepository
 
     public async Task<Department> DeleteDepartmentId(int id)
     {
-        throw new NotImplementedException();
+        var foundDepartment = await _ctx.Departments.FindAsync(id);
+
+        if (foundDepartment != null)
+        {
+            var departmentToreturn = new Department
+            {
+                Id = foundDepartment.Id,
+                DepartmentName = foundDepartment.DepartmentName
+            };
+
+            _ctx.Remove(foundDepartment);
+            await _ctx.SaveChangesAsync();
+
+
+            return departmentToreturn;
+        }
+
+        return null;
     }
 }
