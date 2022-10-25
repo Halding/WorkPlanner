@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Security.Cryptography;
+using Microsoft.EntityFrameworkCore;
 using Workplanner_Core.Models;
 using Workplanner_DataAccess.Entities;
 using Workplanner_Domain.IRepositories;
@@ -29,17 +30,24 @@ public class EmployeeRepository : IEmployeeRepository
 
     public async Task<Employee> PostEmployee(Employee employee)
     {
+
+        
+        CreatePasswordHash(employee.Password, out byte[] passwordHash, out byte[] passwordSalt);
+
+        
         var newEmployee = new EmployeeEntity
         {
             FirstName = employee.FirstName,
             LastName = employee.LastName,
             Role = employee.Role,
             DepartmentId = employee.DepartmentId,
-            Password = employee.Password
+            PasswordHash = passwordHash,
+            PasswordSalt = passwordSalt
         };
+
         _ctx.Employees.Add(newEmployee);
         await _ctx.SaveChangesAsync();
-
+        
         return employee;
     }
 
@@ -53,7 +61,7 @@ public class EmployeeRepository : IEmployeeRepository
             foundEmployeeEntity.LastName = employee.LastName;
             foundEmployeeEntity.DepartmentId = employee.DepartmentId;
             foundEmployeeEntity.Role = employee.Role;
-            foundEmployeeEntity.Password = employee.Password;
+            
 
             await _ctx.SaveChangesAsync();
             return employee;
@@ -104,5 +112,15 @@ public class EmployeeRepository : IEmployeeRepository
 
         }
         return null;
+    }
+    
+    private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+    {
+        using (var hmac = new HMACSHA512())
+        {
+            passwordSalt = hmac.Key;
+            passwordHash = hmac
+                .ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+        }
     }
 }

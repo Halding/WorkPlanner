@@ -30,7 +30,7 @@ public class MainDbContext : DbContext
                 LastName = "Jensen",
                 DepartmentId = null,
                 Role = "User",
-                Password = "admin"
+                
                 // PasswordHash = null,
                 // PasswordSalt = null
             },
@@ -41,7 +41,6 @@ public class MainDbContext : DbContext
                 LastName = "Peter",
                 Role = "Admin",
                 DepartmentId = null,
-                Password = "admin"
                 // PasswordHash = null,
                 // PasswordSalt = null
             }
