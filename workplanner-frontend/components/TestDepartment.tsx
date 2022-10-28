@@ -11,11 +11,11 @@ function TestDepartment() {
 
 
     const {data, isLoading, isError} = useQuery<Department[], Error>(["department"], () => axios
-        .get("https://localhost:7293/api/department")
+        .get("http://localhost:5293/api/department")
         .then((res) => res.data));
 
     const createDepartment = async (data: Department) => {
-        const {data: createdDepartment} = await axios.post("https://localhost:7293/api/Department/create", data);
+        const {data: createdDepartment} = await axios.post("http://localhost:5293/api/Department/create", data);
         console.log(createdDepartment)
 
         return createdDepartment.data
@@ -23,20 +23,20 @@ function TestDepartment() {
 
 
     const deleteDepartmentById = async (data: Department) => {
-        const {data: departmentDeletedById} = await axios.delete(`https://localhost:7293/api/Department/delete/${data.id}`);
+        const {data: departmentDeletedById} = await axios.delete(`http://localhost:5293/api/Department/delete/${data.id}`);
         console.log(departmentDeletedById)
         setDepartment(departmentDeletedById);
     }
 
     const getDepartmentById = async (data: Department) => {
-        const {data: departmentGotById} = await axios.get(`https://localhost:7293/api/department/${data.id}`);
+        const {data: departmentGotById} = await axios.get(`http://localhost:5293/api/department/${data.id}`);
         console.log(departmentGotById);
         setDepartment(departmentGotById)
 
     };
 
     const updateDepartment = async (data: Department) => {
-        const {data: updatedDepartment} = await axios.patch(`https://localhost:7293/api/department/update/${data.id}`, data);
+        const {data: updatedDepartment} = await axios.patch(`http://localhost:5293/api/department/update/${data.id}`, data);
         console.log(updatedDepartment)
         setDepartment(updatedDepartment)
         return updatedDepartment.data;

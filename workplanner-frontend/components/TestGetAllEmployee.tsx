@@ -11,12 +11,12 @@ function TestGetAllEmployee() {
 
     // getall
     const {data, isLoading, isError} = useQuery<Employee[], Error>(["employee"], () => axios
-        .get("https://localhost:7293/api/employee")
+        .get("http://localhost:5293/api/employee")
         .then((res) => res.data));
 
 
     const getEmployeeById = async (data: Employee) => {
-        const {data: employeeGotById} = await axios.get(`https://localhost:7293/api/employee/${data.id}`);
+        const {data: employeeGotById} = await axios.get(`http://localhost:5293/api/employee/${data.id}`);
         console.log(employeeGotById);
         setEmployee(employeeGotById)
 
@@ -24,14 +24,14 @@ function TestGetAllEmployee() {
     };
 
     const deleteEmployeeById = async (data: Employee) => {
-        const {data: employeeDeletedById} = await axios.delete(`https://localhost:7293/api/employee/delete/${data.id}`);
+        const {data: employeeDeletedById} = await axios.delete(`http://localhost:5293/api/employee/delete/${data.id}`);
         console.log(employeeDeletedById)
         setDeletedEmployee(employeeDeletedById);
     }
 
     const getAllEmployee = async () => {
         const {data, isLoading, isError} = useQuery<Employee[], Error>(["employee"], () => axios
-            .get("https://localhost:7293/api/employee")
+            .get("http://localhost:5293/api/employee")
             .then((res) => res.data));
     }
 

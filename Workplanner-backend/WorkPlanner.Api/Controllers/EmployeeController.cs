@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Logging;
 using Workplanner_Core.IServices;
 using Workplanner_Core.Models;
 
@@ -34,9 +35,8 @@ namespace WorkPlanner.Api.Controllers
                 Console.WriteLine(e);
                 throw;
             }
-            
         }
-        
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Employee>> GetEmployeeById(int id)
         {
@@ -45,13 +45,21 @@ namespace WorkPlanner.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost ("create")]
+        [HttpGet("employeeNumber/{employeeNumber}")]
+        public async Task<ActionResult<Employee>> GetEmployeeByEmployeeNumber(int employeeNumber)
+        {
+            var result = await _employeeService.GetEmployeeByEmployeeNumber(employeeNumber);
+
+            return Ok(result);
+        }
+
+        [HttpPost("create")]
         public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
         {
             var result = await _employeeService.CreateEmployee(employee);
             return Ok(result);
         }
-        
+
         [HttpPatch("update/{id}")]
         public async Task<ActionResult<Employee>> PatchEmployee(Employee employee)
         {
@@ -66,6 +74,28 @@ namespace WorkPlanner.Api.Controllers
             var result = await _employeeService.DeleteEmployeeById(id);
 
             return Ok(result);
+        }
+
+        [HttpGet("user")]
+        public IActionResult User()
+        {
+            
+            var jwt = Request.Cookies["jwt"];
+            Console.WriteLine(jwt);
+            Console.WriteLine("Se Her");
+
+            var token = _employeeService.VerifyKey(jwt);
+            Console.WriteLine(token);
+            Console.WriteLine("Se Her");
+
+            int userId = int.Parse(token.Issuer);
+            Console.WriteLine(userId);
+            Console.WriteLine("Se Her");
+
+
+            var user = _employeeService.GetEmployeeById(userId);
+
+            return Ok(user);
         }
     }
 }

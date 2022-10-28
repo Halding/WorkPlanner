@@ -30,8 +30,23 @@ namespace WorkPlanner.Api.Controllers
                 return BadRequest(response);
             }
 
-            return Ok(response);
+            Response.Cookies.Append("OurJwt", response.Data, new CookieOptions
+                           {
+                               HttpOnly = true
+                           });
+            return Ok("success");
+
+            // return Ok(response);
         }
+
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("OurJwt");
+
+            return Ok("logout success");
+        }
+
         
         
     }

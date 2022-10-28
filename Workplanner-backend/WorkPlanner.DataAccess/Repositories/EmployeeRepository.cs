@@ -1,5 +1,8 @@
-﻿using System.Security.Cryptography;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Cryptography;
+using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Workplanner_Core.Models;
 using Workplanner_DataAccess.Entities;
 using Workplanner_Domain.IRepositories;
@@ -113,7 +116,46 @@ public class EmployeeRepository : IEmployeeRepository
         }
         return null;
     }
-    
+
+    public async Task<Employee> ReadEmployeeByEmployeeNumber(int employeeNumber)
+    {
+        var testEmployee = await _ctx.Employees.FirstOrDefaultAsync(x => x.EmployeeNumber == employeeNumber);
+
+        if (testEmployee != null)
+        {
+            var newEmployee = new Employee
+            {
+                Id = testEmployee.Id,
+                FirstName = testEmployee.FirstName,
+                LastName = testEmployee.LastName,
+                DepartmentId = testEmployee.DepartmentId,
+                EmployeeNumber = testEmployee.EmployeeNumber,
+                Role = testEmployee.Role
+            };
+            return newEmployee;
+        }
+
+        return null;
+    }
+
+    public JwtSecurityToken ValidateTokenByJwt(string jwt)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes("AppSettings:Token");
+
+        tokenHandler.ValidateToken(jwt, new TokenValidationParameters
+        {
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuerSigningKey = true,
+            ValidateIssuer = false,
+            ValidateAudience = false
+            
+        }, out SecurityToken validatedToken);
+        
+        return (JwtSecurityToken) validatedToken;
+    }
+
+
     private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
     {
         using (var hmac = new HMACSHA512())
@@ -123,4 +165,8 @@ public class EmployeeRepository : IEmployeeRepository
                 .ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
         }
     }
+    
+   
+    
+    
 }

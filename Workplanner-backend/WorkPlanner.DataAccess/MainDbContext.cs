@@ -21,30 +21,7 @@ public class MainDbContext : DbContext
         modelBuilder.Entity<EmployeeEntity>().Property(x => x.EmployeeNumber).ValueGeneratedOnAddOrUpdate();
         modelBuilder.Entity<DepartmentEntity>().ToTable("Departments");
 
-
-        modelBuilder.Entity<EmployeeEntity>().HasData(
-            new EmployeeEntity
-            {
-                Id = 1,
-                FirstName = "Peter",
-                LastName = "Jensen",
-                DepartmentId = null,
-                Role = "User",
-                
-                // PasswordHash = null,
-                // PasswordSalt = null
-            },
-            new EmployeeEntity
-            {
-                Id = 2,
-                FirstName = "Hans",
-                LastName = "Peter",
-                Role = "Admin",
-                DepartmentId = null,
-                // PasswordHash = null,
-                // PasswordSalt = null
-            }
-        );
+        
 
         modelBuilder.Entity<DepartmentEntity>().HasData(
             new DepartmentEntity

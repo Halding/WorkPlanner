@@ -1,6 +1,8 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Configuration;
@@ -9,6 +11,7 @@ using Workplanner_Core.IServices;
 using Workplanner_Core.Models.Utils;
 using Workplanner_DataAccess.Entities;
 using Workplanner_Domain.IRepositories;
+
 
 namespace Workplanner_DataAccess.Repositories;
 
@@ -45,30 +48,41 @@ public class AuthRepository : IAuthRepository
         response.Data = CreateToken(employee);
         response.Success = true;
         response.Message = "seems to work";
-            
+        
+        
         return response;
     }
 
     private string? CreateToken(EmployeeEntity employee)
     {
-        List<Claim> claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, employee.Id.ToString()),
-            new Claim(ClaimTypes.Name, employee.FirstName + " " + employee.LastName)
-        };
-
+        // List<Claim> claims = new List<Claim>
+        // {
+        //     new Claim(ClaimTypes.NameIdentifier, employee.Id.ToString()),
+        // };
+        //
+        // var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+        //
+        // var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+        //
+        // var token = new JwtSecurityToken(
+        //     claims: claims,
+        //     expires: DateTime.Now.AddMinutes(10),
+        //     signingCredentials: creds);
+        //
+        // var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+        //
+        // return jwt;
+        
         var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
-
+        
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
-        var token = new JwtSecurityToken(
-            claims: claims,
-            expires: DateTime.Now.AddMinutes(10),
-            signingCredentials: creds);
+        var header = new JwtHeader(creds);
 
-        var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+        var payload = new JwtPayload(employee.Id.ToString(), null, null, null, DateTime.Today.AddDays(1));
+        var securityToken = new JwtSecurityToken(header, payload);
 
-        return jwt;
+        return new JwtSecurityTokenHandler().WriteToken(securityToken);
 
     }
 
@@ -92,5 +106,22 @@ public class AuthRepository : IAuthRepository
                 .ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
         }
     }
+    
+    private JwtSecurityToken VerifyKey(string jwt)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes("AppSettings:Token");
+
+        tokenHandler.ValidateToken(jwt, new TokenValidationParameters
+        {
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuerSigningKey = true,
+            ValidateIssuer = false,
+            ValidateAudience = false,
+        }, out SecurityToken validatedToken);
+        return (JwtSecurityToken)validatedToken;
+    }
+
+   
     
 }

@@ -4,13 +4,26 @@ import {
     QueryClient,
     QueryClientProvider,
 } from '@tanstack/react-query'
+import {SessionProvider} from "next-auth/react";
+import {session} from "next-auth/core/routes";
+import {Session} from "next-auth";
 
 const queryClient = new QueryClient()
 
-function MyApp({Component, pageProps}: AppProps) {
-    return <QueryClientProvider client={queryClient}>
-        <Component {...pageProps} />
-    </QueryClientProvider>
+function MyApp({
+                   Component,
+                   pageProps,
+               }: AppProps<{
+    session: Session;
+}>) {
+    return (
+        <SessionProvider session={pageProps.session}>
+            <QueryClientProvider client={queryClient}>
+                <Component {...pageProps} />
+            </QueryClientProvider>
+        </SessionProvider>
+    )
+
 
 }
 
