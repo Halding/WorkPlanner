@@ -79,7 +79,7 @@ public class AuthRepository : IAuthRepository
 
         var header = new JwtHeader(creds);
 
-        var payload = new JwtPayload(employee.Id.ToString(), null, null, null, DateTime.Today.AddDays(1));
+        var payload = new JwtPayload(employee.Id.ToString(), null, null, null, DateTime.Now.AddMinutes(2));
         var securityToken = new JwtSecurityToken(header, payload);
 
         return new JwtSecurityTokenHandler().WriteToken(securityToken);
