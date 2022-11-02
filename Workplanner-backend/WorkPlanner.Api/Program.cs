@@ -1,3 +1,6 @@
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using MicroElements.Swashbuckle.NodaTime;
 using Microsoft.EntityFrameworkCore;
 using Workplanner_Core.IServices;
 using Workplanner_DataAccess;
@@ -6,12 +9,47 @@ using Workplanner_Domain.IRepositories;
 using Workplanner_Domain.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using NodaTime;
+using NodaTime.Serialization.SystemTextJson;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+
+
+
+builder.Services.AddControllers().AddJsonOptions(option =>
+{
+    option.JsonSerializerOptions.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
+});
+void ConfigureSystemTextJsonSerializerSettings(JsonSerializerOptions serializerOptions)
+{
+    // Configures JsonSerializer to properly serialize NodaTime types.
+    serializerOptions.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
+
+    serializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
+}
+
+// builder.Services.AddSwaggerGen(c =>
+//
+// {
+//
+//     c.SwaggerDoc("v1", new OpenApiInfo {Title = "WorkPlanner.Api", Version = "v1"});
+//     
+//     
+//     var jsonSerializerOptions = new JsonSerializerOptions();
+//
+//     ConfigureSystemTextJsonSerializerSettings(jsonSerializerOptions);
+//
+//     c.ConfigureForNodaTimeWithSystemTextJson(jsonSerializerOptions);
+//
+// });
+
+
+
 builder.Services.AddDbContext<MainDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -25,6 +63,8 @@ builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<IShiftService, ShiftService>();
+builder.Services.AddScoped<IShiftRepository, ShiftRepository>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
