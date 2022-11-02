@@ -20,6 +20,13 @@ namespace WorkPlanner.Api.Controllers
             _shiftService = shiftService;
         }
         
+        [HttpPost("create")]
+        public async Task<ActionResult<Shift>> PostEmployee(Shift shift)
+        {
+            var result = await _shiftService.CreateShift(shift);
+            return Ok(result);
+        }
+        
         [HttpGet]
         public async Task<ActionResult<Shift>> ReadAllShift()
         {
@@ -36,12 +43,30 @@ namespace WorkPlanner.Api.Controllers
         }
         
         
-        [HttpPost("create")]
-        public async Task<ActionResult<Shift>> PostEmployee(Shift shift)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Shift>> GetShiftById(int id)
         {
-            var result = await _shiftService.CreateShift(shift);
+            var result = await _shiftService.GetShiftById(id);
+
             return Ok(result);
         }
+
+        [HttpGet("employee{employeeId}")]
+        public async Task<ActionResult<Shift>> GetShiftByEmployeeId(int employeeId)
+        {
+            var result = await _shiftService.GetShiftByEmployeeId(employeeId);
+
+            return Ok(result);
+        }
+        
+        [HttpGet("department{departmentId}")]
+        public async Task<ActionResult<Shift>> GetShiftByDepartmentId(int departmentId)
+        {
+            var result = await _shiftService.GetShiftByDepartmentId(departmentId);
+
+            return Ok(result);
+        }
+        
         
         [HttpPatch("update/{id}")]
         public async Task<ActionResult<Shift>> PatchShift(Shift shift)

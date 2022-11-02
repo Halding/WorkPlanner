@@ -11,6 +11,10 @@ public interface IShiftService
     Task<Shift> UpdateShift(Shift shift);
 
     Task<Shift> GetShiftById(int id);
+    
+    Task<List<Shift>> GetShiftByEmployeeId(int employeeId);
+    
+    Task<List<Shift>> GetShiftByDepartmentId(int departmentId);
 
     Task<Shift> DeleteShiftById(int id);
 }

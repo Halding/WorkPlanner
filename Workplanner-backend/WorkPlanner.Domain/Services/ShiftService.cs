@@ -30,7 +30,17 @@ public class ShiftService : IShiftService
 
     public async Task<Shift> GetShiftById(int id)
     {
-        throw new NotImplementedException();
+        return await _shiftRepository.ReadByShiftId(id);
+    }
+
+    public async Task<List<Shift>> GetShiftByEmployeeId(int employeeId)
+    {
+        return await _shiftRepository.ReadShiftByEmployeeId(employeeId);
+    }
+
+    public async Task<List<Shift>> GetShiftByDepartmentId(int departmentId)
+    {
+        return await _shiftRepository.ReadShiftByDepartmentId(departmentId);
     }
 
     public async Task<Shift> DeleteShiftById(int id)

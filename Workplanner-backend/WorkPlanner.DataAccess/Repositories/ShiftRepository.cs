@@ -14,12 +14,10 @@ public class ShiftRepository : IShiftRepository
     {
         _ctx = ctx;
     }
-    
-    
-    
+
+
     public async Task<List<Shift>> ReadAllShift()
     {
-        
         return await _ctx.Shifts.Select(s => new Shift
         {
             Id = s.Id,
@@ -47,7 +45,6 @@ public class ShiftRepository : IShiftRepository
         _ctx.Add(newShift);
         await _ctx.SaveChangesAsync();
         return shift;
-
     }
 
     public async Task<Shift> PatchShift(Shift shift)
@@ -62,11 +59,76 @@ public class ShiftRepository : IShiftRepository
             foundShiftEntity.StartTime = shift.StartTime;
             foundShiftEntity.ClockInTime = shift.ClockInTime;
             foundShiftEntity.ClockOutTime = shift.ClockOutTime;
-            
+
             await _ctx.SaveChangesAsync();
             return shift;
         }
 
         return null;
+    }
+
+    public async Task<Shift> ReadByShiftId(int id)
+    {
+        var foundShiftEntity = await _ctx.Shifts.FirstOrDefaultAsync(x => x.Id == id);
+
+        if (foundShiftEntity != null)
+        {
+            var newShiftModel = new Shift
+            {
+                Id = foundShiftEntity.Id,
+                ClockInTime = foundShiftEntity.ClockInTime,
+                ClockOutTime = foundShiftEntity.ClockOutTime,
+                DepartmentId = foundShiftEntity.DepartmenId,
+                EmployeeId = foundShiftEntity.EmployeeId,
+                EndTime = foundShiftEntity.EndTime,
+                StartTime = foundShiftEntity.StartTime
+            };
+
+            return newShiftModel;
+        }
+
+        return null;
+    }
+
+    public async Task<List<Shift>> ReadShiftByEmployeeId(int employeeId)
+    {
+        var listOfShift = await _ctx.Shifts.Where(s => s.EmployeeId == employeeId).ToListAsync();
+
+
+        var newList = new List<Shift>();
+
+        listOfShift.ForEach(e => newList.Add(new Shift
+        {
+            Id = e.Id,
+            ClockInTime = e.ClockInTime,
+            ClockOutTime = e.ClockOutTime,
+            DepartmentId = e.DepartmenId,
+            EmployeeId = e.EmployeeId,
+            EndTime = e.EndTime,
+            StartTime = e.StartTime
+        }));
+
+        return newList;
+    }
+
+    public async Task<List<Shift>> ReadShiftByDepartmentId(int departmentId)
+    {
+        var listOfShift = await _ctx.Shifts.Where(s => s.DepartmenId == departmentId).ToListAsync();
+
+
+        var newList = new List<Shift>();
+
+        listOfShift.ForEach(e => newList.Add(new Shift
+        {
+            Id = e.Id,
+            ClockInTime = e.ClockInTime,
+            ClockOutTime = e.ClockOutTime,
+            DepartmentId = e.DepartmenId,
+            EmployeeId = e.EmployeeId,
+            EndTime = e.EndTime,
+            StartTime = e.StartTime
+        }));
+
+        return newList;
     }
 }
