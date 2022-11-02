@@ -23,6 +23,7 @@ public class EmployeeRepository : IEmployeeRepository
         return await _ctx.Employees.Select(e => new Employee
         {
             Id = e.Id,
+            Title = e.Title,
             EmployeeNumber = e.EmployeeNumber,
             DepartmentId = e.DepartmentId,
             Role = e.Role,
@@ -40,6 +41,7 @@ public class EmployeeRepository : IEmployeeRepository
         
         var newEmployee = new EmployeeEntity
         {
+            Title = employee.Title,
             FirstName = employee.FirstName,
             LastName = employee.LastName,
             Role = employee.Role,
@@ -60,6 +62,7 @@ public class EmployeeRepository : IEmployeeRepository
 
         if (foundEmployeeEntity != null)
         {
+            foundEmployeeEntity.Title = employee.Title;
             foundEmployeeEntity.FirstName = employee.FirstName;
             foundEmployeeEntity.LastName = employee.LastName;
             foundEmployeeEntity.DepartmentId = employee.DepartmentId;
@@ -81,6 +84,7 @@ public class EmployeeRepository : IEmployeeRepository
         {
             var newEmployee = new Employee
             {
+                Title = testEmployee.Title,
                 Id = testEmployee.Id,
                 FirstName = testEmployee.FirstName,
                 LastName = testEmployee.LastName,
@@ -101,6 +105,7 @@ public class EmployeeRepository : IEmployeeRepository
         {
             var newEmployee = new Employee
             {
+                Title = testEmployee.Title,
                 Id = testEmployee.Id,
                 FirstName = testEmployee.FirstName,
                 LastName = testEmployee.LastName,
@@ -125,6 +130,7 @@ public class EmployeeRepository : IEmployeeRepository
         {
             var newEmployee = new Employee
             {
+                Title = testEmployee.Title,
                 Id = testEmployee.Id,
                 FirstName = testEmployee.FirstName,
                 LastName = testEmployee.LastName,
