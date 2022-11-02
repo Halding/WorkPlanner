@@ -10,4 +10,5 @@ public interface IShiftRepository
     Task<Shift> ReadByShiftId(int id);
     Task<List<Shift>> ReadShiftByEmployeeId(int employeeId);
     Task<List<Shift>> ReadShiftByDepartmentId(int departmentId);
+    Task<Shift> DeleteById(int id);
 }

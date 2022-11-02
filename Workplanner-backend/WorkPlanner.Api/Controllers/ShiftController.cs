@@ -75,6 +75,14 @@ namespace WorkPlanner.Api.Controllers
 
             return Ok(result);
         }
+        
+        [HttpDelete("delete/{id}")]
+        public async Task<ActionResult<Employee>> DeleteShiftById(int id)
+        {
+            var result = await _shiftService.DeleteShiftById(id);
+
+            return Ok(result);
+        }
 
     }
 }

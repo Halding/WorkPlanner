@@ -21,6 +21,13 @@ namespace WorkPlanner.Api.Controllers
             _employeeService = employeeService;
         }
 
+        
+        [HttpPost("create")]
+        public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
+        {
+            var result = await _employeeService.CreateEmployee(employee);
+            return Ok(result);
+        }
 
         [HttpGet]
         public async Task<ActionResult<Employee>> ReadAllEmployee()
@@ -53,28 +60,6 @@ namespace WorkPlanner.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost("create")]
-        public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
-        {
-            var result = await _employeeService.CreateEmployee(employee);
-            return Ok(result);
-        }
-
-        [HttpPatch("update/{id}")]
-        public async Task<ActionResult<Employee>> PatchEmployee(Employee employee)
-        {
-            var result = await _employeeService.UpdateEmployee(employee);
-
-            return Ok(result);
-        }
-
-        [HttpDelete("delete/{id}")]
-        public async Task<ActionResult<Employee>> DeleteEmployeeById(int id)
-        {
-            var result = await _employeeService.DeleteEmployeeById(id);
-
-            return Ok(result);
-        }
 
         [HttpGet("user")]
         public IActionResult User()
@@ -96,6 +81,22 @@ namespace WorkPlanner.Api.Controllers
             var user = _employeeService.GetEmployeeById(userId);
 
             return Ok(user);
+        }
+        
+        [HttpPatch("update/{id}")]
+        public async Task<ActionResult<Employee>> PatchEmployee(Employee employee)
+        {
+            var result = await _employeeService.UpdateEmployee(employee);
+
+            return Ok(result);
+        }
+        
+        [HttpDelete("delete/{id}")]
+        public async Task<ActionResult<Employee>> DeleteEmployeeById(int id)
+        {
+            var result = await _employeeService.DeleteEmployeeById(id);
+
+            return Ok(result);
         }
     }
 }

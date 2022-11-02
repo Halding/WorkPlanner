@@ -131,4 +131,28 @@ public class ShiftRepository : IShiftRepository
 
         return newList;
     }
+
+    public async Task<Shift> DeleteById(int id)
+    {
+        var newShift = await _ctx.Shifts.FindAsync(id);
+        if (newShift!= null)
+        {
+            var deleteShift = new Shift
+            {
+                Id = newShift.Id,
+                ClockInTime = newShift.ClockInTime,
+                ClockOutTime = newShift.ClockOutTime,
+                DepartmentId = newShift.DepartmenId,
+                EmployeeId = newShift.EmployeeId,
+                EndTime = newShift.EndTime,
+                StartTime = newShift.StartTime
+            };
+            
+            _ctx.Remove(newShift);
+            await _ctx.SaveChangesAsync();
+            return deleteShift;
+
+        }
+        return null;
+    }
 }

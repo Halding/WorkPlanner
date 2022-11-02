@@ -45,6 +45,6 @@ public class ShiftService : IShiftService
 
     public async Task<Shift> DeleteShiftById(int id)
     {
-        throw new NotImplementedException();
+        return await _shiftRepository.DeleteById(id);
     }
 }
