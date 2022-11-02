@@ -25,7 +25,7 @@ public class ShiftService : IShiftService
 
     public async Task<Shift> UpdateShift(Shift shift)
     {
-        throw new NotImplementedException();
+        return await _shiftRepository.PatchShift(shift);
     }
 
     public async Task<Shift> GetShiftById(int id)

@@ -49,4 +49,24 @@ public class ShiftRepository : IShiftRepository
         return shift;
 
     }
+
+    public async Task<Shift> PatchShift(Shift shift)
+    {
+        var foundShiftEntity = await _ctx.Shifts.FirstOrDefaultAsync(x => x.Id == shift.Id);
+
+        if (foundShiftEntity != null)
+        {
+            foundShiftEntity.DepartmenId = shift.DepartmentId;
+            foundShiftEntity.EmployeeId = shift.EmployeeId;
+            foundShiftEntity.EndTime = shift.EndTime;
+            foundShiftEntity.StartTime = shift.StartTime;
+            foundShiftEntity.ClockInTime = shift.ClockInTime;
+            foundShiftEntity.ClockOutTime = shift.ClockOutTime;
+            
+            await _ctx.SaveChangesAsync();
+            return shift;
+        }
+
+        return null;
+    }
 }

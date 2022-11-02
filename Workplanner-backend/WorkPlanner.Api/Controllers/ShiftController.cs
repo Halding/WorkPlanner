@@ -42,6 +42,14 @@ namespace WorkPlanner.Api.Controllers
             var result = await _shiftService.CreateShift(shift);
             return Ok(result);
         }
+        
+        [HttpPatch("update/{id}")]
+        public async Task<ActionResult<Shift>> PatchShift(Shift shift)
+        {
+            var result = await _shiftService.UpdateShift(shift);
+
+            return Ok(result);
+        }
 
     }
 }
