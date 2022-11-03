@@ -45,8 +45,8 @@ public class EmployeeService : IEmployeeService
         return _employeeRepository.DeleteEmployeeId(id);
     }
 
-    public JwtSecurityToken VerifyKey(string jwt)
-    {
-        return _employeeRepository.ValidateTokenByJwt(jwt);
-    }
+    // public JwtSecurityToken VerifyKey(string jwt)
+    // {
+    //     return _employeeRepository.ValidateTokenByJwt(jwt);
+    // }
 }
