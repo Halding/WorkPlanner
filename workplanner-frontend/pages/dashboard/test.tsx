@@ -1,9 +1,15 @@
 import React from 'react';
+import {signIn} from "next-auth/react";
+import TestAll from "../../components/TestAll";
 
 function Test() {
     return (
         <div>
-            <h1>test</h1>
+            <button onClick={() => {
+                signIn()
+            }}> login
+            </button>
+            <TestAll></TestAll>
         </div>
     );
 }

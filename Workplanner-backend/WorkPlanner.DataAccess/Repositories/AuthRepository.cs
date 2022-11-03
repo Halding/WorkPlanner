@@ -55,24 +55,7 @@ public class AuthRepository : IAuthRepository
 
     private string? CreateToken(EmployeeEntity employee)
     {
-        // List<Claim> claims = new List<Claim>
-        // {
-        //     new Claim(ClaimTypes.NameIdentifier, employee.Id.ToString()),
-        // };
-        //
-        // var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
-        //
-        // var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-        //
-        // var token = new JwtSecurityToken(
-        //     claims: claims,
-        //     expires: DateTime.Now.AddMinutes(10),
-        //     signingCredentials: creds);
-        //
-        // var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-        //
-        // return jwt;
-        
+
         var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
         
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
