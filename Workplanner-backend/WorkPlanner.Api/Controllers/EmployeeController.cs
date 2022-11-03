@@ -12,7 +12,7 @@ using Workplanner_Core.Models;
 
 namespace WorkPlanner.Api.Controllers
 {
-    
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase
@@ -65,27 +65,14 @@ namespace WorkPlanner.Api.Controllers
 
 
         [HttpGet("user")]
-        public IActionResult GetUser()
+        public async Task<IActionResult> GetUser()
         {
-            
             
             var userId = User.FindFirstValue("UserId");
             Console.WriteLine(userId);
             
-            
-            var jwt = Request.Cookies["jwt"];
-            Console.WriteLine(jwt);
-            Console.WriteLine("Se Her");
-            
-            
-            Console.WriteLine("Se Her");
 
-            //int userId = int.Parse(token.Issuer);
-            Console.WriteLine(userId);
-            Console.WriteLine("Se Her");
-
-
-            var user = _employeeService.GetEmployeeById(int.Parse(userId));
+            var user = await _employeeService.GetEmployeeById(int.Parse(userId));
 
             return Ok(user);
         }
