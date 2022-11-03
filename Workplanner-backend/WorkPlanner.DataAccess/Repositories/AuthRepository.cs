@@ -25,48 +25,68 @@ public class AuthRepository : IAuthRepository
         _ctx = ctx;
         _configuration = configuration;
     }
-    
+
     public async Task<ServiceResponse<string>> Login(int employeeNumber, string password)
     {
         var response = new ServiceResponse<string>();
         var employee = await _ctx.Employees.FirstOrDefaultAsync(x => x.EmployeeNumber.Equals(employeeNumber));
         Console.WriteLine("testtesttesttest");
         Console.WriteLine(employee.EmployeeNumber);
-        
+
 
         if (employee == null)
         {
             response.Success = false;
             response.Message = "User not Found";
         }
-        else if(!VerifyPasswordHash(password, employee.PasswordHash, employee.PasswordSalt))
+        else if (!VerifyPasswordHash(password, employee.PasswordHash, employee.PasswordSalt))
         {
             response.Success = false;
             response.Message = "Employee number or Password is incorrect (this is password)";
         }
-        
+
         response.Data = CreateToken(employee);
         response.Success = true;
         response.Message = "seems to work";
-        
-        
+
+
         return response;
     }
 
     private string? CreateToken(EmployeeEntity employee)
     {
+        // var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token:Key").Value));
+        //
+        // var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+        //
+        // var header = new JwtHeader(creds);
+        //
+        // var payload = new JwtPayload(employee.Id.ToString(), null, null, null, DateTime.Now.AddMinutes(5));
+        // var securityToken = new JwtSecurityToken(header, payload);
+        //
+        // return new JwtSecurityTokenHandler().WriteToken(securityToken);
 
-        var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
-        
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
-        var header = new JwtHeader(creds);
+        //create claims details based on the user information
+        var claims = new[]
+        {
+            new Claim(JwtRegisteredClaimNames.Sub, _configuration["AppSettings:Token:Subject"]),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
+            new Claim("UserId", employee.Id.ToString()),
+            new Claim("EmployeeNumber", employee.EmployeeNumber.ToString()),
+        };
 
-        var payload = new JwtPayload(employee.Id.ToString(), null, null, null, DateTime.Now.AddMinutes(2));
-        var securityToken = new JwtSecurityToken(header, payload);
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["AppSettings:Token:Key"]));
+        var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var token = new JwtSecurityToken(
+            _configuration["AppSettings:Token:Issuer"],
+            _configuration["AppSettings:Token:Audience"],
+            claims,
+            expires: DateTime.UtcNow.AddMinutes(10),
+            signingCredentials: signIn);
 
-        return new JwtSecurityTokenHandler().WriteToken(securityToken);
-
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
 
@@ -78,8 +98,8 @@ public class AuthRepository : IAuthRepository
             return cumputedHash.SequenceEqual(passwordHash);
         }
     }
-    
-    
+
+
     private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
     {
         using (var hmac = new HMACSHA512())
@@ -89,11 +109,11 @@ public class AuthRepository : IAuthRepository
                 .ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
         }
     }
-    
+
     private JwtSecurityToken VerifyKey(string jwt)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes("AppSettings:Token");
+        var key = Encoding.ASCII.GetBytes("AppSettings:Token:Key");
 
         tokenHandler.ValidateToken(jwt, new TokenValidationParameters
         {
@@ -104,7 +124,4 @@ public class AuthRepository : IAuthRepository
         }, out SecurityToken validatedToken);
         return (JwtSecurityToken)validatedToken;
     }
-
-   
-    
 }
