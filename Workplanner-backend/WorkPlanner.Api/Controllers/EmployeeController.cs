@@ -65,7 +65,7 @@ namespace WorkPlanner.Api.Controllers
         public IActionResult User()
         {
             
-            var jwt = Request.Cookies["jwt"];
+            var jwt = Request.Cookies["OurJwt"];
             Console.WriteLine(jwt);
             Console.WriteLine("Se Her");
 
