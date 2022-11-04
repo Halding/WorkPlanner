@@ -4,9 +4,10 @@ import {useRouter} from 'next/router'
 import {NextRouter} from "next/dist/client/router";
 import {Employee} from "../models/Employee";
 import {sign} from "crypto";
+import {NextRequest} from "next/server";
 
 
-function Login() {
+function Login(req : NextRequest) {
 
     const [employee, setEmployee] = useState<Employee>();
     const [employeeNumber, setEmployeeNumber] = useState("");

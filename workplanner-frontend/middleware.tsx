@@ -1,7 +1,7 @@
-import {NextResponse} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 
 
-export default function middleware(req : any) {
+export default function middleware(req : NextRequest) {
 
 
     let jwt = req.cookies.get("OurJwt");
