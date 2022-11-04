@@ -5,7 +5,7 @@ import {
     QueryClientProvider,
 } from '@tanstack/react-query'
 import {SessionProvider} from "next-auth/react";
-import {session} from "next-auth/core/routes";
+
 import {Session} from "next-auth";
 
 const queryClient = new QueryClient()
@@ -17,11 +17,11 @@ function MyApp({
     session: Session;
 }>) {
     return (
-        <SessionProvider session={pageProps.session}>
+        // <SessionProvider session={pageProps.session}>
             <QueryClientProvider client={queryClient}>
                 <Component {...pageProps} />
             </QueryClientProvider>
-        </SessionProvider>
+        // </SessionProvider>
     )
 
 
