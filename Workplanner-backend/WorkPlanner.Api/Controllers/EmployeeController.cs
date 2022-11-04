@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Logging;
@@ -10,6 +12,7 @@ using Workplanner_Core.Models;
 
 namespace WorkPlanner.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase
@@ -62,23 +65,13 @@ namespace WorkPlanner.Api.Controllers
 
 
         [HttpGet("user")]
-        public IActionResult User()
+        public async Task<IActionResult> GetUser()
         {
-            
-            var jwt = Request.Cookies["OurJwt"];
-            Console.WriteLine(jwt);
-            Console.WriteLine("Se Her");
+            var userId = User.FindFirstValue("UserId");
 
-            var token = _employeeService.VerifyKey(jwt);
-            Console.WriteLine(token);
-            Console.WriteLine("Se Her");
-
-            int userId = int.Parse(token.Issuer);
             Console.WriteLine(userId);
-            Console.WriteLine("Se Her");
-
-
-            var user = _employeeService.GetEmployeeById(userId);
+            
+            var user = await _employeeService.GetEmployeeById(int.Parse(userId));
 
             return Ok(user);
         }

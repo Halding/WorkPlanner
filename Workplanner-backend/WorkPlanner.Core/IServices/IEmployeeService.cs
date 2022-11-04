@@ -18,7 +18,7 @@ public interface IEmployeeService
 
     Task<Employee> DeleteEmployeeById(int id);
 
-    JwtSecurityToken VerifyKey(string jwt);
+    // JwtSecurityToken VerifyKey(string jwt);
 
 
 }

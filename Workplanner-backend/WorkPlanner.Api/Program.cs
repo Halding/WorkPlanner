@@ -1,3 +1,4 @@
+using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using MicroElements.Swashbuckle.NodaTime;
@@ -19,8 +20,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 
-
-
 builder.Services.AddControllers().AddJsonOptions(option =>
 {
     option.JsonSerializerOptions.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
@@ -32,22 +31,6 @@ void ConfigureSystemTextJsonSerializerSettings(JsonSerializerOptions serializerO
 
     serializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
 }
-
-// builder.Services.AddSwaggerGen(c =>
-//
-// {
-//
-//     c.SwaggerDoc("v1", new OpenApiInfo {Title = "WorkPlanner.Api", Version = "v1"});
-//     
-//     
-//     var jsonSerializerOptions = new JsonSerializerOptions();
-//
-//     ConfigureSystemTextJsonSerializerSettings(jsonSerializerOptions);
-//
-//     c.ConfigureForNodaTimeWithSystemTextJson(jsonSerializerOptions);
-//
-// });
-
 
 
 builder.Services.AddDbContext<MainDbContext>(options =>
@@ -66,19 +49,20 @@ builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<IShiftService, ShiftService>();
 builder.Services.AddScoped<IShiftRepository, ShiftRepository>();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters()
     {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey =
-                new SymmetricSecurityKey(
-                    System.Text.Encoding.UTF8.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
-            ValidateIssuer = false,
-            ValidateAudience = false
-        };
-    });
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["AppSettings:Token:Audience"],
+        ValidIssuer = builder.Configuration["AppSettings:Token:Issuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["AppSettings:Token:Key"]))
+    };
+});
+
 
 
 var app = builder.Build();
@@ -98,6 +82,8 @@ app.UseCors(o => o
     .AllowCredentials()
     .WithOrigins("http://localhost:3000")
 );
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

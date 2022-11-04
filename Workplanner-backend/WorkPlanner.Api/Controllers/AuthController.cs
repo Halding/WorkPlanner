@@ -32,7 +32,7 @@ namespace WorkPlanner.Api.Controllers
 
             Response.Cookies.Append("OurJwt", response.Data, new CookieOptions
                            {
-                               HttpOnly = true
+                               HttpOnly = false
                            });
             return Ok("success");
 
