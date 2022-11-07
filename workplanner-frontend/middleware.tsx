@@ -13,7 +13,7 @@ export default function middleware(req : NextRequest) {
     }
     if (jwt) {
 
-        const jwtExpire = JSON.parse(atob(jwt.value.split('.')[1]));
+        const jwtExpire = JSON.parse(atob(jwt.split('.')[1]));
         const timeNowSec = Math.round(Date.now() / 1000);
 
         if (jwtExpire.exp < Math.round(Date.now() / 1000) && url.includes("/dashboard")) {
