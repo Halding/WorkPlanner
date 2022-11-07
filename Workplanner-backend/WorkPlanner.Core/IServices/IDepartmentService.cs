@@ -4,7 +4,7 @@ namespace Workplanner_Core.IServices;
 
 public interface IDepartmentService
 {
-    Task<List<Department>> GetAllDepartments();
+    Task<List<Department>> GetAllDepartment();
 
     Task<Department> CreateDepartment(Department department);
 

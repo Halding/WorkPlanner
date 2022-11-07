@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Workplanner_Core.IServices;
 using Workplanner_Core.Models;
+using Workplanner_Domain.IRepositories;
 
 namespace WorkPlanner.Api.Controllers
 {
@@ -19,12 +20,21 @@ namespace WorkPlanner.Api.Controllers
         {
             _departmentService = departmentService;
         }
+        
+        
+        [HttpPost ("create")]
+        public async Task<ActionResult<Department>> PostDepartment(Department department)
+        {
+            var result = await _departmentService.CreateDepartment(department);
+            return Ok(result);
+        }
+        
         [HttpGet]
-        public async Task<ActionResult<Department>> ReadAll()
+        public async Task<ActionResult<Department>> ReadAllDepartment()
         {
             try
             {
-                var result = await _departmentService.GetAllDepartments();
+                var result = await _departmentService.GetAllDepartment();
                 return Ok(result);
             }
             catch (Exception e)
@@ -32,7 +42,9 @@ namespace WorkPlanner.Api.Controllers
                 Console.WriteLine(e);
                 throw;
             }
+            
         }
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<Department>> GetDepartmentById(int id)
         {
@@ -41,27 +53,22 @@ namespace WorkPlanner.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost ("create")]
-        public async Task<ActionResult<Department>> PostDepartment(Department department)
-        {
-            var result = await _departmentService.CreateDepartment(department);
-            return Ok(result);
-        }
-        
         [HttpPatch("update/{id}")]
-        public async Task<ActionResult<Department>> PatchDepartment(Department department)
+        public async Task<ActionResult<Department>> UpdateDepartment(Department department)
         {
             var result = await _departmentService.UpdateDepartment(department);
 
             return Ok(result);
         }
-
+        
         [HttpDelete("delete/{id}")]
-        public async Task<ActionResult<Department>> DeleteDepartmentById(int id)
+        public async Task<ActionResult<Employee>> DeleteDepartmentById(int id)
         {
             var result = await _departmentService.DeleteDepartmentById(id);
 
             return Ok(result);
         }
+
+
     }
 }

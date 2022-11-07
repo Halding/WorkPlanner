@@ -6,11 +6,13 @@ public class Employee
     public int EmployeeNumber { get; set; }
     public string FirstName { get; set; } = "";
     public string LastName { get; set; } = "";
+
+    public string? Title { get; set; }
+    
     public int? DepartmentId { get; set; }
     public string Role { get; set; } = "";
 
-    public string Password { get; set; } = string.Empty;
-    // public byte[]? PasswordSalt { get; set; }
-    // public byte[]? PasswordHash { get; set; }
-
+    public string Password { get; set; }
+    
+    
 }

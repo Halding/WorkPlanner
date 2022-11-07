@@ -1,4 +1,3 @@
-import {number} from "prop-types";
 
 export type Employee = {
     id: number

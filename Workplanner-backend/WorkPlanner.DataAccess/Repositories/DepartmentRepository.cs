@@ -13,35 +13,37 @@ public class DepartmentRepository : IDepartmentRepository
     {
         _ctx = ctx;
     }
-    public async Task<List<Department>> ReadAllDepartments()
+
+    public async Task<List<Department>> ReadAllDepartment()
     {
-        return await _ctx.Departments.Select(e => new Department
+        return await _ctx.Departments.Select(d => new Department
         {
-            Id = e.Id,
-            DepartmentName = e.DepartmentName,
+            Id = d.Id,
+            DepartmentName = d.DepartmentName
         }).ToListAsync();
     }
 
-    public async Task<Department> CreateDepartment(Department department)
+    public async Task<Department> PostDepartment(Department department)
     {
         var newDepartment = new DepartmentEntity
         {
             DepartmentName = department.DepartmentName
         };
-        _ctx.Departments.Add(newDepartment);
-        await _ctx.SaveChangesAsync();
 
-        return department;
+         await _ctx.Departments.AddAsync(newDepartment);
+         await _ctx.SaveChangesAsync();
+
+         return department;
     }
 
-    public async Task<Department> UpdateDepartment(Department department)
+    public async Task<Department> PatchDepartment(Department department)
     {
-        var foundDepartmentEntity = await _ctx.Departments.FirstOrDefaultAsync(x => x.Id == department.Id);
+        var foundDepartment = await _ctx.Departments.FirstOrDefaultAsync(x => x.Id == department.Id);
 
-        if (foundDepartmentEntity != null)
+        if (foundDepartment != null)
         {
-            foundDepartmentEntity.DepartmentName = department.DepartmentName;
-
+            foundDepartment.Id = department.Id;
+            foundDepartment.DepartmentName = department.DepartmentName;
             await _ctx.SaveChangesAsync();
             return department;
         }
@@ -49,7 +51,7 @@ public class DepartmentRepository : IDepartmentRepository
         return null;
     }
 
-    public async Task<Department> GetDepartmentById(int id)
+    public async Task<Department> ReadByDepartmentById(int id)
     {
         var foundDepartment = await _ctx.Departments.FindAsync(id);
 
@@ -57,8 +59,8 @@ public class DepartmentRepository : IDepartmentRepository
         {
             var newDepartment = new Department
             {
-               Id = foundDepartment.Id,
-               DepartmentName = foundDepartment.DepartmentName
+                Id = foundDepartment.Id,
+                DepartmentName = foundDepartment.DepartmentName
             };
             return newDepartment;
         }
@@ -66,22 +68,25 @@ public class DepartmentRepository : IDepartmentRepository
         return null;
     }
 
-    public async Task<Department> DeleteDepartmentById(int id)
+    public async Task<Department> DeleteDepartmentId(int id)
     {
         var foundDepartment = await _ctx.Departments.FindAsync(id);
-        if (foundDepartment!= null)
+
+        if (foundDepartment != null)
         {
-            var newDepartment = new Department
+            var departmentToreturn = new Department
             {
-              Id = foundDepartment.Id,
-              DepartmentName = foundDepartment.DepartmentName
+                Id = foundDepartment.Id,
+                DepartmentName = foundDepartment.DepartmentName
             };
-            
+
             _ctx.Remove(foundDepartment);
             await _ctx.SaveChangesAsync();
-            return newDepartment;
 
+
+            return departmentToreturn;
         }
+
         return null;
     }
 }

@@ -4,13 +4,11 @@ namespace Workplanner_Domain.IRepositories;
 
 public interface IDepartmentRepository
 {
-    Task<List<Department>> ReadAllDepartments();
+    Task<List<Department>> ReadAllDepartment();
 
-    Task<Department> CreateDepartment(Department department);
-
-    Task<Department> UpdateDepartment(Department department);
-
-    Task<Department> GetDepartmentById(int id);
-
-    Task<Department> DeleteDepartmentById(int id);
+    Task<Department> PostDepartment(Department department);
+    Task<Department> PatchDepartment(Department department);
+    Task<Department> ReadByDepartmentById(int id);
+    Task<Department> DeleteDepartmentId(int id);
+    
 }

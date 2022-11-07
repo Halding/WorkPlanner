@@ -1,4 +1,5 @@
-﻿using Workplanner_Core.IServices;
+﻿using System.IdentityModel.Tokens.Jwt;
+using Workplanner_Core.IServices;
 using Workplanner_Core.Models;
 using Workplanner_Domain.IRepositories;
 
@@ -17,7 +18,7 @@ public class EmployeeService : IEmployeeService
     //Gets all employees in the list
     public async Task<List<Employee>> GetAllEmployees()
     {
-        return await _employeeRepository.ReadAll();
+        return await _employeeRepository.ReadAllEmployee();
     }
 
     public async Task<Employee> CreateEmployee(Employee employee)
@@ -35,8 +36,18 @@ public class EmployeeService : IEmployeeService
         return await _employeeRepository.ReadByEmployeeById(id);
     }
 
+    public async Task<Employee> GetEmployeeByEmployeeNumber(int employeeNumber)
+    {
+        return await _employeeRepository.ReadEmployeeByEmployeeNumber(employeeNumber);
+    }
+
     public Task<Employee> DeleteEmployeeById(int id)
     {
         return _employeeRepository.DeleteEmployeeId(id);
     }
+
+    // public JwtSecurityToken VerifyKey(string jwt)
+    // {
+    //     return _employeeRepository.ValidateTokenByJwt(jwt);
+    // }
 }

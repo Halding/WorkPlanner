@@ -23,13 +23,13 @@ function TestCreateEmployee() {
 
 
     const createEmployee = async (data: Employee) => {
-        const {data: response} = await axios.post("https://localhost:7293/api/employee/create", data);
+        const {data: response} = await axios.post("http://localhost:5293/api/employee/create", data);
         console.log(data)
         return response.data;
     };
 
     const updateEmployee = async (data: Employee) => {
-        const {data: response} = await axios.patch(`https://localhost:7293/api/employee/update/${data.id}`, data);
+        const {data: response} = await axios.patch(`http://localhost:5293/api/employee/update/${data.id}`, data);
         console.log(data)
         return response.data;
     };
@@ -40,7 +40,7 @@ function TestCreateEmployee() {
 
 
     const testEmployee = {
-        id: 7,
+        id: 9,
         firstName: "Svend",
         lastName: "123",
         departmentId: null,

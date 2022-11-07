@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Workplanner_DataAccess;
 
@@ -11,9 +12,10 @@ using Workplanner_DataAccess;
 namespace Workplanner_DataAccess.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    partial class MainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221021112713_departmentSetup")]
+    partial class departmentSetup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,22 +76,37 @@ namespace Workplanner_DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("PasswordHash")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<byte[]>("PasswordSalt")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("Employees", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            EmployeeNumber = 0,
+                            FirstName = "Peter",
+                            LastName = "Jensen",
+                            Password = "admin",
+                            Role = "User"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            EmployeeNumber = 0,
+                            FirstName = "Hans",
+                            LastName = "Peter",
+                            Password = "admin",
+                            Role = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("Workplanner_DataAccess.Entities.ShiftEntity", b =>
@@ -100,23 +117,23 @@ namespace Workplanner_DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTimeOffset?>("ClockInTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("ClockInTime")
+                        .HasColumnType("datetime2");
 
-                    b.Property<DateTimeOffset?>("ClockOutTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("ClockOutTime")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int?>("DepartmenId")
+                    b.Property<int>("DepartmenId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("EmployeeId")
+                    b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<DateTimeOffset>("EndTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
 
-                    b.Property<DateTimeOffset>("StartTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
