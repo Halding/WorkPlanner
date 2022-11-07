@@ -83,7 +83,7 @@ public class AuthRepository : IAuthRepository
             _configuration["AppSettings:Token:Issuer"],
             _configuration["AppSettings:Token:Audience"],
             claims,
-            expires: DateTime.UtcNow.AddMinutes(1),
+            expires: DateTime.UtcNow.AddMinutes(10),
             signingCredentials: signIn);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
