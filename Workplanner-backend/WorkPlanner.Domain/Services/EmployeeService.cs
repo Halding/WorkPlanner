@@ -15,6 +15,7 @@ public class EmployeeService : IEmployeeService
         _employeeRepository = employeeRepository;
     }
 
+    //Gets all employees in the list
     public async Task<List<Employee>> GetAllEmployees()
     {
         return await _employeeRepository.ReadAllEmployee();
@@ -22,14 +23,14 @@ public class EmployeeService : IEmployeeService
 
     public async Task<Employee> CreateEmployee(Employee employee)
     {
-         return await _employeeRepository.PostEmployee(employee);
+        return await _employeeRepository.PostEmployee(employee);
     }
 
     public async Task<Employee> UpdateEmployee(Employee employee)
     {
         return await _employeeRepository.PatchEmployee(employee);
     }
-
+    
     public async Task<Employee> GetEmployeeById(int id)
     {
         return await _employeeRepository.ReadByEmployeeById(id);
