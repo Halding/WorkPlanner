@@ -7,13 +7,15 @@ import React, {useEffect, useState} from "react";
 import {Employee} from "../models/Employee";
 import {useRouter} from "next/router";
 import Login from "../components/Login";
+import Layout from "../components/Layout";
+
 
 const Home: NextPage = () => {
 
 
     return (
        <div>
-           <Login></Login>
+               <Login></Login>
        </div>
     )
 }

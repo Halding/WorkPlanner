@@ -62,7 +62,7 @@ function Login() {
         if (login.status === 200) {
 
 
-            await router.push("http://localhost:3000/dashboard/test")
+            await router.push("http://localhost:3000/dashboard/overview")
         }
 
     };

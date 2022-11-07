@@ -5,6 +5,7 @@ import {
     QueryClientProvider,
 } from '@tanstack/react-query'
 import {SessionProvider} from "next-auth/react";
+import { RecoilRoot } from 'recoil';
 
 import {Session} from "next-auth";
 
@@ -19,7 +20,9 @@ function MyApp({
     return (
         // <SessionProvider session={pageProps.session}>
             <QueryClientProvider client={queryClient}>
-                <Component {...pageProps} />
+                <RecoilRoot>
+                    <Component {...pageProps} />
+                </RecoilRoot>
             </QueryClientProvider>
         // </SessionProvider>
     )
