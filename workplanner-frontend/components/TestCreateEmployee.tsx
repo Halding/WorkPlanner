@@ -43,9 +43,9 @@ function TestCreateEmployee() {
         id: 9,
         firstName: "Svend",
         lastName: "123",
-        departmentId: null,
+        departmentId: 1,
         role: "123",
-        password: "123"
+        password: null
     }
 
     return (
