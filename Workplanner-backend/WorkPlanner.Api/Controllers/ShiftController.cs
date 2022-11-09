@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -66,6 +67,19 @@ namespace WorkPlanner.Api.Controllers
 
             return Ok(result);
         }
+        
+        [HttpGet("test")]
+        public async Task<IActionResult> GetUser()
+        {
+            var employeeNumber = User.FindFirstValue("EmployeeNumber");
+
+            Console.WriteLine(employeeNumber);
+
+            var shift = await _shiftService.GetShiftByEmployeeId(int.Parse(employeeNumber));
+
+            return Ok(shift);
+        }
+        
         
         
         [HttpPatch("update/{id}")]

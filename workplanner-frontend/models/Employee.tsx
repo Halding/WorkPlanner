@@ -3,7 +3,7 @@ export type Employee = {
     id: number
     firstName: string,
     lastName: string,
-    departmentId: null,
+    departmentId: number,
     role: string,
-    password: string
+    password: null
 };

@@ -20,7 +20,6 @@ function TestGetAllEmployee() {
         console.log(employeeGotById);
         setEmployee(employeeGotById)
 
-
     };
 
     const deleteEmployeeById = async (data: Employee) => {
@@ -52,9 +51,9 @@ function TestGetAllEmployee() {
         id: 8,
         firstName: "Svend",
         lastName: "123",
-        departmentId: null,
+        departmentId: 1,
         role: "123",
-        password: "123"
+        password: null
     }
 
 
