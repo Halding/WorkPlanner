@@ -332,9 +332,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {/*                  {children}*/}
           {/*              </motion.main>*/}
           {/*          </AnimatePresence>*/}
-          {/*          /!* <main className="flex-1 bg-white bg-slate-100 lg:ml-64">*/}
-          {/*  {children}*/}
-          {/*</main> *!/*/}
+                    <main className="flex-1 bg-white bg-slate-100 lg:ml-64">
+            {children}
+          </main>
           {/*          <ul className="absolute top-20 mx-4 flex w-[362px] flex-col gap-2 sm:right-4 sm:mx-0 md:right-4">*/}
           {/*              <AnimatePresence mode="popLayout">*/}
           {/*                  {notifications.slice(0, 5).map((n) => (*/}

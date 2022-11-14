@@ -11,4 +11,10 @@ public class Shift
     public DateTimeOffset? ClockOutTime { get; set; }
     public int? EmployeeId { get; set; }
     public int? DepartmentId { get; set; }
+
+    public string? EmployeeFirstName { get; set; }
+
+    public string? EmployeeLastName { get; set; }
+
+    public int? EmployeeNumber { get; set; }
 }

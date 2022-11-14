@@ -52,7 +52,7 @@ namespace WorkPlanner.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("employee{employeeId}")]
+        [HttpGet("employee/{employeeId}")]
         public async Task<ActionResult<Shift>> GetShiftByEmployeeId(int employeeId)
         {
             var result = await _shiftService.GetShiftByEmployeeId(employeeId);
@@ -60,7 +60,7 @@ namespace WorkPlanner.Api.Controllers
             return Ok(result);
         }
         
-        [HttpGet("department{departmentId}")]
+        [HttpGet("department/{departmentId}")]
         public async Task<ActionResult<Shift>> GetShiftByDepartmentId(int departmentId)
         {
             var result = await _shiftService.GetShiftByDepartmentId(departmentId);
@@ -68,14 +68,14 @@ namespace WorkPlanner.Api.Controllers
             return Ok(result);
         }
         
-        [HttpGet("test")]
+        [HttpGet("employeeId")]
         public async Task<IActionResult> GetUser()
         {
-            var employeeNumber = User.FindFirstValue("EmployeeNumber");
+            var employeeId = User.FindFirstValue("UserId");
 
-            Console.WriteLine(employeeNumber);
+            Console.WriteLine(employeeId);
 
-            var shift = await _shiftService.GetShiftByEmployeeId(int.Parse(employeeNumber));
+            var shift = await _shiftService.GetShiftByEmployeeId(int.Parse(employeeId));
 
             return Ok(shift);
         }
