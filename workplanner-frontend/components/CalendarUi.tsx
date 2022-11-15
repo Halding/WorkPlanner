@@ -2,11 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {Calendar, dateFnsLocalizer} from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css"
 import axios from "axios";
-import {startOfWeek, format, parse, getDay} from "date-fns";
+import {startOfWeek, format, parse, getDay, closestTo} from "date-fns";
 import {Employee} from "../models/Employee";
 import {getCookie} from "./Login";
 import {Shift} from "../models/Shift";
 import {CaEvent} from "../models/CaEvent";
+import {element} from "prop-types";
 
 
 const locales = {
@@ -34,6 +35,40 @@ function CalendarUi() {
 
     const handleClockIn = async () => {
 
+        const jwt = getCookie("OurJwt")
+
+        const testDate = new Date('2022-11-15T10:03:23.403+00:00')
+
+        const onGoingShift = allShifts?.find(element => new Date(element.startTime) <= testDate && new Date(element.endTime) >= testDate)
+
+        if (onGoingShift != undefined) {
+
+            onGoingShift.clockInTime = new Date()
+            console.log(onGoingShift)
+            const {data: updatedShift} = await axios.patch(`http://localhost:5293/api/shift/update/${onGoingShift?.id}`, onGoingShift);
+            console.log(updatedShift)
+            return updatedShift.data;
+
+        }else
+        {
+            const sortedArr = allShifts?.sort((a,b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
+
+            const foundNextShift = sortedArr?.find(function (date) {
+                return new Date(date.startTime).getTime() > testDate.getTime()
+            })
+
+            if (foundNextShift) {
+                foundNextShift.clockInTime = new Date()
+                const {data: updatedShift} = await axios.patch(`http://localhost:5293/api/shift/update/${foundNextShift?.id}`, foundNextShift);
+                console.log(updatedShift)
+                return updatedShift.data
+            }
+
+            console.log("asd")
+            console.log(foundNextShift)
+            console.log("asd")
+        }
+
 
     }
 
@@ -53,8 +88,6 @@ function CalendarUi() {
             }
         })
 
-
-
         console.log("yo")
         console.log(employeeFromToken)
         console.log("yo")
@@ -70,7 +103,7 @@ function CalendarUi() {
             })
         }
 
-        console.log(allVagter)
+
 
         setEmployee(employeeFromToken)
         setAllEvents(allVagter)
@@ -84,7 +117,7 @@ function CalendarUi() {
     }, []);
 
     useEffect(() => {
-
+        console.log(allShifts)
 
     }, [allEvents]);
 
@@ -110,7 +143,7 @@ function CalendarUi() {
                     <div className="px-6 pt-4 pb-2">
                         <div className="my-2 flex justify-between ">
 
-                            <button
+                            <button onClick={() => handleClockIn()}
                                 type="button"
                                 className=" rounded border border-transparent bg-blue-600 px-6 py-3 text-xs font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                             >

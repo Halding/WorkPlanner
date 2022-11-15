@@ -4,8 +4,8 @@ export type Shift = {
     endTime: string,
     employeeFirstName: string,
     employeeLastName: string,
-    clockInTime: null
-    clockOutTime: null,
+    clockInTime: null | Date,
+    clockOutTime: null | Date,
     employeeId: number,
     departmentId: number,
     employeeNumber: number,
