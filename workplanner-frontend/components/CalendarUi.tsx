@@ -64,7 +64,7 @@ function CalendarUi() {
 
         for (const shift of usersShifts) {
             allVagter.push(vagter = {
-                title: `${shift.employeeFirstName} ${shift.employeeLastName} ${shift.employeeNumber}`,
+                title: `${shift.employeeNumber} ${shift.employeeFirstName}`,
                 startTime: new Date(shift.startTime),
                 endTime: new Date(shift.endTime)
             })
@@ -112,13 +112,13 @@ function CalendarUi() {
 
                             <button
                                 type="button"
-                                className=" rounded border border-transparent bg-indigo-600 px-6 py-3 text-xs font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                className=" rounded border border-transparent bg-blue-600 px-6 py-3 text-xs font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                             >
                                 Clock In
                             </button>
                             <button
                                 type="button"
-                                className=" rounded border border-transparent bg-indigo-600 px-6 py-3 text-xs font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                className=" rounded border border-transparent bg-blue-600 px-6 py-3 text-xs font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                             >
                                 Clock out
                             </button>

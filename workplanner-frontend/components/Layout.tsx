@@ -108,12 +108,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                                     <div className="flex flex-shrink-0 items-center px-4">
                                         <img
                                             className="h-8 w-auto"
-                                            src="https://tailwindui.com/img/logos/mark.svg?color=cyan&shade=300"
+                                            src="https://tailwindui.com/img/logos/mark.svg?color=blue&shade=300"
                                             alt="Easywire logo"
                                         />
                                     </div>
                                     <nav
-                                        className="mt-5 h-full flex-shrink-0 divide-y divide-cyan-800 overflow-y-auto"
+                                        className="mt-5 h-full flex-shrink-0 divide-y divide-blue-800 overflow-y-auto"
                                         aria-label="Sidebar"
                                     >
                                         <div className="space-y-1 px-2">
@@ -122,8 +122,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                                                     <a
                                                         className={classNames(
                                                             isCurrentPage(item)
-                                                                ? 'bg-cyan-800 text-white'
-                                                                : 'text-cyan-100 hover:bg-cyan-600 hover:text-white',
+                                                                ? 'bg-blue-800 text-white'
+                                                                : 'text-blue-100 hover:bg-blue-600 hover:text-white',
                                                             'group flex items-center rounded-md px-2 py-2 text-base font-medium'
                                                         )}
                                                         aria-current={
@@ -131,7 +131,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                                                         }
                                                     >
                                                         <item.icon
-                                                            className="mr-4 h-6 w-6 flex-shrink-0 text-cyan-200"
+                                                            className="mr-4 h-6 w-6 flex-shrink-0 text-blue-200"
                                                             aria-hidden="true"
                                                         />
                                                         {t(`${item.name}`)}
@@ -143,9 +143,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                                             <div className="space-y-1 px-2">
                                                 {secondaryNavigation.map((item) => (
                                                     <Link key={item.name} href={item.href}>
-                                                        <a className="group flex items-center rounded-md px-2 py-2 text-base font-medium text-cyan-100 hover:bg-cyan-600 hover:text-white">
+                                                        <a className="group flex items-center rounded-md px-2 py-2 text-base font-medium text-blue-100 hover:bg-blue-600 hover:text-white">
                                                             <item.icon
-                                                                className="mr-4 h-6 w-6 text-cyan-200"
+                                                                className="mr-4 h-6 w-6 text-blue-200"
                                                                 aria-hidden="true"
                                                             />
                                                             {t(`${item.name}`)}
@@ -167,16 +167,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 {/* Static sidebar for desktop */}
                 <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
                     {/* Sidebar component, swap this element with another sidebar if you like */}
-                    <div className="flex flex-grow flex-col overflow-y-auto bg-cyan-700 pt-5 pb-4">
+                    <div className="flex flex-grow flex-col overflow-y-auto bg-blue-700 pt-5 pb-4">
                         <div className="flex flex-shrink-0 items-center px-4">
                             <img
                                 className="h-8 w-auto"
-                                src="https://tailwindui.com/img/logos/mark.svg?color=cyan&shade=300"
+                                src="https://tailwindui.com/img/logos/mark.svg?color=blue&shade=300"
                                 alt="Easywire logo"
                             />
                         </div>
                         <nav
-                            className="mt-5 flex flex-1 flex-col divide-y divide-cyan-800 overflow-y-auto"
+                            className="mt-5 flex flex-1 flex-col divide-y divide-blue-800 overflow-y-auto"
                             aria-label="Sidebar"
                         >
                             <div className="space-y-1 px-2">
@@ -185,14 +185,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                                         <a
                                             className={classNames(
                                                 isCurrentPage(item)
-                                                    ? 'bg-cyan-800 text-white'
-                                                    : 'text-cyan-100 hover:bg-cyan-600 hover:text-white',
+                                                    ? 'bg-blue-800 text-white'
+                                                    : 'text-blue-100 hover:bg-blue-600 hover:text-white',
                                                 'group flex items-center rounded-md px-2 py-2 text-sm font-medium leading-6'
                                             )}
                                             aria-current={isCurrentPage(item) ? 'page' : undefined}
                                         >
                                             <item.icon
-                                                className="mr-4 h-6 w-6 flex-shrink-0 text-cyan-200"
+                                                className="mr-4 h-6 w-6 flex-shrink-0 text-blue-200"
                                                 aria-hidden="true"
                                             />
                                             {t(`${item.name}`)}
@@ -204,9 +204,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                                 <div className="space-y-1 px-2">
                                     {secondaryNavigation.map((item) => (
                                         <Link key={item.name} href={item.href}>
-                                            <a className="group flex items-center rounded-md px-2 py-2 text-sm font-medium leading-6 text-cyan-100 hover:bg-cyan-600 hover:text-white">
+                                            <a className="group flex items-center rounded-md px-2 py-2 text-sm font-medium leading-6 text-blue-100 hover:bg-blue-600 hover:text-white">
                                                 <item.icon
-                                                    className="mr-4 h-6 w-6 text-cyan-200"
+                                                    className="mr-4 h-6 w-6 text-blue-200"
                                                     aria-hidden="true"
                                                 />
                                                 {t(`${item.name}`)}

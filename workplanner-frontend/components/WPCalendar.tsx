@@ -60,7 +60,7 @@ function WpCalendar() {
 
             for (const shift of departmentShifts) {
                 allVagter.push(vagter = {
-                    title: `${shift.employeeFirstName} ${shift.employeeLastName} ${shift.employeeNumber}`,
+                    title: `${shift.employeeNumber} ${shift.employeeFirstName}`,
                     startTime: new Date(shift.startTime),
                     endTime: new Date(shift.endTime)
                 })
