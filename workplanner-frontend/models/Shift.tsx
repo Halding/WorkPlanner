@@ -2,8 +2,12 @@ export type Shift = {
     id: number,
     startTime: string,
     endTime: string,
-    clockInTime: null
-    clockOutTime: null,
+    employeeFirstName: string,
+    employeeLastName: string,
+    clockInTime: null | Date,
+    clockOutTime: null | Date,
     employeeId: number,
-    departmentId: number
+    departmentId: number,
+    employeeNumber: number,
+
 };

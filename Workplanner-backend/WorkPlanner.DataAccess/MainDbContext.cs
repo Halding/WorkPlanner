@@ -17,9 +17,11 @@ public class MainDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<EmployeeEntity>().ToTable("Employees");
+        modelBuilder.Entity<EmployeeEntity>().ToTable("Employees").HasKey(x => x.Id);;
         modelBuilder.Entity<EmployeeEntity>().Property(x => x.EmployeeNumber).ValueGeneratedOnAddOrUpdate();
-        modelBuilder.Entity<DepartmentEntity>().ToTable("Departments");
+        modelBuilder.Entity<DepartmentEntity>().ToTable("Departments").HasKey(x => x.Id);;
+        modelBuilder.Entity<ShiftEntity>().ToTable("Shift").HasKey(x => x.Id);
+        modelBuilder.Entity<ShiftEntity>().HasOne(x => x.Employee).WithMany().HasForeignKey(x => x.EmployeeId);
 
         
 
