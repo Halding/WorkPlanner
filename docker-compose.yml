@@ -1,0 +1,9 @@
+﻿version: "3.9"
+
+services:
+  backend:
+    image: halding/WorkPlanner-backend:${TAG}
+    restart: always
+  frontend:
+    image: halding/workplanner-frontend:${TAG}
+    restart: always
