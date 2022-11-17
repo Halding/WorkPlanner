@@ -25,12 +25,57 @@ const localize = dateFnsLocalizer({
 })
 
 
-
 function CalendarUi() {
 
     const [allEvents, setAllEvents] = useState<CaEvent[]>()
     const [employee, setEmployee] = useState<Employee>()
     const [allShifts, setAllShifts] = useState<Shift[]>()
+    const [shiftStatus, setShiftStatus] = useState<Shift>()
+    const [lastShift, setLastShift] = useState<Shift>()
+
+
+    const handleClockOut = async () => {
+
+        const jwt = getCookie("OurJwt")
+
+        const testDate = new Date('2022-11-15T10:03:23.403+00:00')
+
+        const onGoingShift = allShifts?.find(element => new Date(element.startTime) <= testDate && new Date(element.endTime) >= testDate)
+
+        if (onGoingShift != undefined && onGoingShift.startTime != null) {
+
+            onGoingShift.clockOutTime = new Date()
+            setLastShift(onGoingShift)
+            console.log(onGoingShift)
+            const {data: updatedShift} = await axios.patch(`http://localhost:5293/api/shift/update/${onGoingShift?.id}`, onGoingShift, {
+                headers: {
+                    Authorization: "Bearer " + jwt
+                }
+            });
+
+            return updatedShift.data;
+
+        } else {
+            const sortedArr = allShifts?.sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime())
+
+            const foundLastShift = sortedArr?.find(function (date) {
+                return new Date(date.startTime).getTime() < testDate.getTime()
+            })
+
+            if (foundLastShift && foundLastShift.clockInTime != null) {
+                foundLastShift.clockOutTime = new Date()
+                setLastShift(foundLastShift)
+                const {data: updatedShift} = await axios.patch(`http://localhost:5293/api/shift/update/${foundLastShift?.id}`, foundLastShift, {
+                    headers: {
+                        Authorization: "Bearer " + jwt
+                    }
+                });
+                console.log(updatedShift)
+                return updatedShift.data
+            }
+
+        }
+    }
 
 
     const handleClockIn = async () => {
@@ -45,13 +90,16 @@ function CalendarUi() {
 
             onGoingShift.clockInTime = new Date()
             console.log(onGoingShift)
-            const {data: updatedShift} = await axios.patch(`http://localhost:5293/api/shift/update/${onGoingShift?.id}`, onGoingShift);
+            const {data: updatedShift} = await axios.patch(`http://localhost:5293/api/shift/update/${onGoingShift?.id}`, onGoingShift, {
+                headers: {
+                    Authorization: "Bearer " + jwt
+                }
+            });
             console.log(updatedShift)
             return updatedShift.data;
 
-        }else
-        {
-            const sortedArr = allShifts?.sort((a,b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
+        } else {
+            const sortedArr = allShifts?.sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
 
             const foundNextShift = sortedArr?.find(function (date) {
                 return new Date(date.startTime).getTime() > testDate.getTime()
@@ -59,7 +107,11 @@ function CalendarUi() {
 
             if (foundNextShift) {
                 foundNextShift.clockInTime = new Date()
-                const {data: updatedShift} = await axios.patch(`http://localhost:5293/api/shift/update/${foundNextShift?.id}`, foundNextShift);
+                const {data: updatedShift} = await axios.patch(`http://localhost:5293/api/shift/update/${foundNextShift?.id}`, foundNextShift, {
+                    headers: {
+                        Authorization: "Bearer " + jwt
+                    }
+                });
                 console.log(updatedShift)
                 return updatedShift.data
             }
@@ -68,9 +120,37 @@ function CalendarUi() {
             console.log(foundNextShift)
             console.log("asd")
         }
-
-
     }
+
+    const status = async () => {
+
+        const jwt = getCookie("OurJwt")
+
+        const testDate = new Date('2022-11-15T10:03:23.403+00:00')
+        const onGoingShift = allShifts?.find(element => new Date(element.startTime) <= testDate && new Date(element.endTime) >= testDate)
+
+        if (onGoingShift != undefined) {
+            setShiftStatus(onGoingShift)
+
+            console.log("yo1")
+            console.log(onGoingShift)
+            console.log("yo1")
+        } else {
+
+            const sortedArr = allShifts?.sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
+
+            const foundNextShift = sortedArr?.find(function (date) {
+                return new Date(date.startTime).getTime() > testDate.getTime()
+            })
+            setShiftStatus(foundNextShift)
+
+            console.log("yo3")
+            console.log(foundNextShift)
+            console.log("yo3")
+
+        }
+    }
+
 
     const getUserShifts = async () => {
 
@@ -88,10 +168,6 @@ function CalendarUi() {
             }
         })
 
-        console.log("yo")
-        console.log(employeeFromToken)
-        console.log("yo")
-
         let vagter: CaEvent;
         let allVagter = [];
 
@@ -104,22 +180,27 @@ function CalendarUi() {
         }
 
 
-
         setEmployee(employeeFromToken)
         setAllEvents(allVagter)
         setAllShifts(usersShifts)
+
+
+        console.log("yo4")
+        console.log(usersShifts)
+        console.log("yo4")
 
     };
 
     useEffect(() => {
         getUserShifts()
-
+        handleClockOut()
+        handleClockIn()
     }, []);
 
     useEffect(() => {
-        console.log(allShifts)
+        status()
 
-    }, [allEvents]);
+    }, [allShifts, shiftStatus, lastShift]);
 
 
 
@@ -128,30 +209,57 @@ function CalendarUi() {
     return (
         <div className="m-10">
 
-
             <div className="my-5">
                 <div className="max-w-sm rounded overflow-hidden shadow-lg">
                     <div className="px-6 py-4">
-                        <div className="font-bold text-xl mb-2"> FirstName = {employee?.firstName} LastName = {employee?.lastName}</div>
-                        <p className="text-gray-700 text-base">
-                            vagt i dag
-                        </p>
-                        <p className="text-gray-700 text-base">
-                            clocked in ? status `?
-                        </p>
+                        <div className="font-bold text-xl mb-2"> {employee?.firstName} {employee?.lastName}</div>
+                        <div className="my-2">
+                            <p className="text-gray-700 text-base">
+                                Your ongoing shift/Next Shift
+                            </p>
+                            {shiftStatus ? (
+                                <p className="text-gray-700 text-base">
+                                    {format(new Date(shiftStatus?.startTime), "EEE 'd.' dd MMM HH:mm")} til {format(new Date(shiftStatus?.endTime), "EEE 'd.' dd MMM HH:mm")}
+                                </p>
+                            ) : (
+                                <p className="text-gray-700 text-base">
+                                    you have no shifts
+                                </p>
+                            )}
+                        </div>
+                        {shiftStatus?.clockInTime ? (
+                            <p className="text-gray-700 text-base">
+                                clocked in {format(new Date(shiftStatus?.clockInTime), "EEE 'd.' dd MMM HH:mm")}
+                            </p>
+                        ) : (
+                            <p className="text-gray-700 text-base">
+                                clocked in : Not clocked in
+                            </p>
+                        )}
+                        {shiftStatus?.clockOutTime ? (
+                            <p className="text-gray-700 text-base">
+                                clocked Out {format(new Date(shiftStatus?.clockOutTime), "EEE 'd.' dd MMM HH:mm")}
+                            </p>
+                        ) : (
+                            <p className="text-gray-700 text-base">
+                                clocked Out : Not clocked out
+                            </p>
+                        )}
+
+
                     </div>
                     <div className="px-6 pt-4 pb-2">
                         <div className="my-2 flex justify-between ">
 
                             <button onClick={() => handleClockIn()}
-                                type="button"
-                                className=" rounded border border-transparent bg-blue-600 px-6 py-3 text-xs font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                    type="button"
+                                    className=" rounded border border-transparent bg-blue-600 px-6 py-3 text-xs font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                             >
                                 Clock In
                             </button>
-                            <button
-                                type="button"
-                                className=" rounded border border-transparent bg-blue-600 px-6 py-3 text-xs font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                            <button onClick={() => handleClockOut()}
+                                    type="button"
+                                    className=" rounded border border-transparent bg-blue-600 px-6 py-3 text-xs font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                             >
                                 Clock out
                             </button>
@@ -174,5 +282,6 @@ function CalendarUi() {
 
     );
 }
+
 
 export default CalendarUi;

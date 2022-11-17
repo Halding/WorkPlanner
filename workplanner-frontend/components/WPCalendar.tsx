@@ -86,8 +86,13 @@ function WpCalendar() {
 
         <div className=" m-10">
             <div className="my-5">
-
-                <div>
+                <button
+                        type="button"
+                        className=" rounded border border-transparent bg-blue-600 px-6 py-3 text-xs font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                >
+                    Create Shift
+                </button>
+                <div className="my-2">
                     <label htmlFor="countries"
                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Select
                         Department</label>
