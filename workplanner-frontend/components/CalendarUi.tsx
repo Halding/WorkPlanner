@@ -150,8 +150,7 @@ function CalendarUi() {
 
         }
     }
-
-
+    
     const getUserShifts = async () => {
 
         const jwt = getCookie("OurJwt")
@@ -175,10 +174,11 @@ function CalendarUi() {
             allVagter.push(vagter = {
                 title: `${shift.employeeNumber} ${shift.employeeFirstName}`,
                 startTime: new Date(shift.startTime),
-                endTime: new Date(shift.endTime)
+                endTime: new Date(shift.endTime),
+                clockInTime: new Date(shift.clockInTime),
+                clockOutTime: new Date(shift.clockOutTime)
             })
         }
-
 
         setEmployee(employeeFromToken)
         setAllEvents(allVagter)

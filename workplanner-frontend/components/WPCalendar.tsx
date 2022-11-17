@@ -62,7 +62,9 @@ function WpCalendar() {
                 allVagter.push(vagter = {
                     title: `${shift.employeeNumber} ${shift.employeeFirstName}`,
                     startTime: new Date(shift.startTime),
-                    endTime: new Date(shift.endTime)
+                    endTime: new Date(shift.endTime),
+                    clockInTime: new Date(shift.clockInTime),
+                    clockOutTime: new Date(shift.clockOutTime)
                 })
             }
             setAllEvents(allVagter)
