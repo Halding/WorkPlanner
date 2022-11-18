@@ -7,7 +7,7 @@ import {Employee} from "../models/Employee";
 import {getCookie} from "./Login";
 import {Shift} from "../models/Shift";
 import {CaEvent} from "../models/CaEvent";
-import {element} from "prop-types";
+import DatePicker from "react-datepicker";
 
 
 const locales = {
@@ -32,6 +32,17 @@ function CalendarUi() {
     const [allShifts, setAllShifts] = useState<Shift[]>()
     const [shiftStatus, setShiftStatus] = useState<Shift>()
     const [lastShift, setLastShift] = useState<Shift>()
+
+    useEffect(() => {
+        getUserShifts()
+        handleClockOut()
+        handleClockIn()
+    }, []);
+
+    useEffect(() => {
+        status()
+
+    }, [allShifts, shiftStatus, lastShift]);
 
 
     const handleClockOut = async () => {
@@ -150,7 +161,7 @@ function CalendarUi() {
 
         }
     }
-    
+
     const getUserShifts = async () => {
 
         const jwt = getCookie("OurJwt")
@@ -172,7 +183,7 @@ function CalendarUi() {
 
         for (const shift of usersShifts) {
             allVagter.push(vagter = {
-                title: `${shift.employeeNumber} ${shift.employeeFirstName}`,
+                title: `${shift.employeeFirstName}`,
                 startTime: new Date(shift.startTime),
                 endTime: new Date(shift.endTime),
                 clockInTime: new Date(shift.clockInTime),
@@ -191,93 +202,79 @@ function CalendarUi() {
 
     };
 
-    useEffect(() => {
-        getUserShifts()
-        handleClockOut()
-        handleClockIn()
-    }, []);
-
-    useEffect(() => {
-        status()
-
-    }, [allShifts, shiftStatus, lastShift]);
-
-
-
-
 
     return (
-        <div className="m-10">
-
-            <div className="my-5">
-                <div className="max-w-sm rounded overflow-hidden shadow-lg">
-                    <div className="px-6 py-4">
-                        <div className="font-bold text-xl mb-2"> {employee?.firstName} {employee?.lastName}</div>
-                        <div className="my-2">
-                            <p className="text-gray-700 text-base">
-                                Your ongoing shift/Next Shift
-                            </p>
-                            {shiftStatus ? (
+        <div>
+            <div className="m-10">
+                <div className="my-5">
+                    <div className="max-w-sm rounded overflow-hidden shadow-lg">
+                        <div className="px-6 py-4">
+                            <div className="font-bold text-xl mb-2"> {employee?.firstName} {employee?.lastName}</div>
+                            <div className="my-2">
                                 <p className="text-gray-700 text-base">
-                                    {format(new Date(shiftStatus?.startTime), "EEE 'd.' dd MMM HH:mm")} til {format(new Date(shiftStatus?.endTime), "EEE 'd.' dd MMM HH:mm")}
+                                    Your ongoing shift/Next Shift
+                                </p>
+                                {shiftStatus ? (
+                                    <p className="text-gray-700 text-base">
+                                        {format(new Date(shiftStatus?.startTime), "EEE 'd.' dd MMM HH:mm")} til {format(new Date(shiftStatus?.endTime), "EEE 'd.' dd MMM HH:mm")}
+                                    </p>
+                                ) : (
+                                    <p className="text-gray-700 text-base">
+                                        you have no shifts
+                                    </p>
+                                )}
+                            </div>
+                            {shiftStatus?.clockInTime ? (
+                                <p className="text-gray-700 text-base">
+                                    clocked in {format(new Date(shiftStatus?.clockInTime), "EEE 'd.' dd MMM HH:mm")}
                                 </p>
                             ) : (
                                 <p className="text-gray-700 text-base">
-                                    you have no shifts
+                                    clocked in : Not clocked in
+                                </p>
+                            )}
+                            {shiftStatus?.clockOutTime ? (
+                                <p className="text-gray-700 text-base">
+                                    clocked Out {format(new Date(shiftStatus?.clockOutTime), "EEE 'd.' dd MMM HH:mm")}
+                                </p>
+                            ) : (
+                                <p className="text-gray-700 text-base">
+                                    clocked Out : Not clocked out
                                 </p>
                             )}
                         </div>
-                        {shiftStatus?.clockInTime ? (
-                            <p className="text-gray-700 text-base">
-                                clocked in {format(new Date(shiftStatus?.clockInTime), "EEE 'd.' dd MMM HH:mm")}
-                            </p>
-                        ) : (
-                            <p className="text-gray-700 text-base">
-                                clocked in : Not clocked in
-                            </p>
-                        )}
-                        {shiftStatus?.clockOutTime ? (
-                            <p className="text-gray-700 text-base">
-                                clocked Out {format(new Date(shiftStatus?.clockOutTime), "EEE 'd.' dd MMM HH:mm")}
-                            </p>
-                        ) : (
-                            <p className="text-gray-700 text-base">
-                                clocked Out : Not clocked out
-                            </p>
-                        )}
 
+                        <div className="px-6 pt-4 pb-2">
+                            <div className="my-2 flex justify-between ">
 
-                    </div>
-                    <div className="px-6 pt-4 pb-2">
-                        <div className="my-2 flex justify-between ">
-
-                            <button onClick={() => handleClockIn()}
-                                    type="button"
-                                    className=" rounded border border-transparent bg-blue-600 px-6 py-3 text-xs font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                            >
-                                Clock In
-                            </button>
-                            <button onClick={() => handleClockOut()}
-                                    type="button"
-                                    className=" rounded border border-transparent bg-blue-600 px-6 py-3 text-xs font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                            >
-                                Clock out
-                            </button>
+                                <button onClick={() => handleClockIn()}
+                                        type="button"
+                                        className=" rounded border border-transparent bg-blue-600 px-6 py-3 text-xs font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                >
+                                    Clock In
+                                </button>
+                                <button onClick={() => handleClockOut()}
+                                        type="button"
+                                        className=" rounded border border-transparent bg-blue-600 px-6 py-3 text-xs font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                >
+                                    Clock out
+                                </button>
+                            </div>
                         </div>
                     </div>
+
+
                 </div>
 
 
+                <div>
+                    <Calendar localizer={localize} events={allEvents}
+                              startAccessor="startTime" endAccessor="endTime" style={{height: 500}}>
+
+                    </Calendar>
+                </div>
+
             </div>
-
-
-            <div>
-                <Calendar localizer={localize} events={allEvents}
-                          startAccessor="startTime" endAccessor="endTime" style={{height: 500}}>
-
-                </Calendar>
-            </div>
-
         </div>
 
     );
