@@ -9,17 +9,21 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import {CaEvent} from "../models/CaEvent";
+import {Shift} from "../models/Shift";
+import {CreateShift} from "../models/CreateShift";
+import {end} from "@popperjs/core";
 
 
 
 
-export default function ModalShift({isOpen, setIsOpen}: { isOpen: boolean, setIsOpen: (arg0: boolean) => void }) {
+export default function ModalEdit({isOpen, setIsOpen, shiftData}: {shiftData: CaEvent | undefined,isOpen: boolean, setIsOpen: (arg0: boolean) => void}) {
 
     const cancelButtonRef = useRef(null)
-    const [employee, setEmployee] = useState<Employee>()
-    const [employeeNumber, setEmployeeNumber] = useState<string>("")
+    const [shift, setShift] = useState<Shift>()
     const [startValue, setStartValue] = useState<Date | null>(new Date());
     const [endValue, setEndValue] = useState<Date | null>(new Date());
+    const [employeeNumber, setEmployeeNumber] = useState<string>("")
 
     const handleStartTime = (newValue: Date | null) => {
         setStartValue(newValue);
@@ -30,42 +34,78 @@ export default function ModalShift({isOpen, setIsOpen}: { isOpen: boolean, setIs
     };
 
     useEffect(() => {
-        postShift()
-    }, [employee]);
+     getShift()
+    }, [shiftData]);
 
 
-    const getData = async () => {
+
+
+    const postData = async () => {
         const jwt = getCookie("OurJwt")
 
-        const {data: employeeFromEmployeeNumber} = await axios.get(`https://localhost:7293/api/employee/employeeNumber/${employeeNumber}`, {
-            headers: {
-                Authorization: "Bearer " + jwt
-            }
-        })
-        setEmployee(employeeFromEmployeeNumber)
+        getShift()
 
-    }
-
-    const postShift = async () => {
-
-        const jwt = getCookie("OurJwt")
-
-        if (employee && startValue != null && endValue != null) {
-            let testShift : MakeShift = {
+        if (shift && startValue != null && endValue != null) {
+            console.log("se mig ")
+            let testShift : CreateShift = {
+                id : shift.id,
                 startTime : startValue,
                 endTime : endValue,
                 clockInTime : null,
                 clockOutTime : null,
-                employeeId : employee.id,
-                departmentId: employee.departmentId
+                employeeId : shift.employeeId,
+                departmentId: shift.departmentId
+
             }
-            const {data: createdShift} = await axios.post(`http://localhost:5293/api/shift/create`,testShift, {
+            const {data: createdShift} = await axios.patch(`http://localhost:5293/api/shift/update/${shift.id}`,testShift, {
                 headers: {
                     Authorization: "Bearer " + jwt
                 }
             });
-            setIsOpen(false);
+
         }
+
+    }
+
+    const DeleteShift = async () => {
+        const jwt = getCookie("OurJwt")
+
+        getShift()
+
+        if (shift && startValue != null && endValue != null) {
+            let testShift : CreateShift = {
+                id : shift.id,
+                startTime : startValue,
+                endTime : endValue,
+                clockInTime : null,
+                clockOutTime : null,
+                employeeId : shift.employeeId,
+                departmentId: shift.departmentId
+
+            }
+            const {data: createdShift} = await axios.delete(`http://localhost:5293/api/shift/delete/${shift.id}`,{
+                headers: {
+                    Authorization: "Bearer " + jwt
+                }
+            });
+
+        }
+
+    }
+
+    const getShift = async () => {
+
+        const jwt = getCookie("OurJwt")
+
+        if (shiftData) {
+            const {data: shiftFromId} = await axios.get(`https://localhost:7293/api/shift/${shiftData.id}`, {
+                headers: {
+                    Authorization: "Bearer " + jwt
+                }
+            })
+            setShift(shiftFromId)
+        }
+
 
     }
     return (
@@ -98,23 +138,14 @@ export default function ModalShift({isOpen, setIsOpen}: { isOpen: boolean, setIs
                                 className="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                                 <form>
                                     <label className="block text-sm font-medium">
-                                        Choose Employee by EmployeeNumber
+                                        Edit Time on Shift Or Delete.
                                     </label>
-                                    <input
-                                        value={employeeNumber}
-                                        onChange={e => setEmployeeNumber(e.target.value)}
-                                        type="text"
-                                        name="email"
-                                        id="email"
-                                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                                        placeholder="1061"
-                                    />
                                     <div className="my-2 flex justify-between ">
                                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                                             <Stack spacing={3}>
                                                 <DateTimePicker
                                                     label="Time The Shift Start"
-                                                    value={startValue}
+                                                    value={shiftData?.startTime}
                                                     inputFormat="dd/MM/yyyy HH:mm"
                                                     ampm={false}
                                                     onChange={handleStartTime}
@@ -126,7 +157,7 @@ export default function ModalShift({isOpen, setIsOpen}: { isOpen: boolean, setIs
                                             <Stack spacing={3}>
                                                 <DateTimePicker
                                                     label="Time The Shift End"
-                                                    value={endValue}
+                                                    value={shiftData?.endTime}
                                                     inputFormat="dd/MM/yyyy HH:mm"
                                                     ampm={false}
                                                     onChange={handleEndTime}
@@ -140,11 +171,13 @@ export default function ModalShift({isOpen, setIsOpen}: { isOpen: boolean, setIs
                                 <div className="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
                                     <button
                                         type="button"
-                                        className="inline-flex w-full justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:col-start-2 sm:text-sm"
+                                        className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:col-start-2 sm:text-sm"
                                         onClick={async () => {
-                                            await getData();}}
+                                            await DeleteShift();
+                                            setIsOpen(false);
+                                        }}
                                     >
-                                        Create Shift
+                                        Delete Shift
                                     </button>
                                     <button
                                         type="button"
@@ -153,6 +186,18 @@ export default function ModalShift({isOpen, setIsOpen}: { isOpen: boolean, setIs
                                         ref={cancelButtonRef}
                                     >
                                         Cancel
+                                    </button>
+                                </div>
+                                <div className="mt-5 sm:mt-6">
+                                    <button
+                                        type="button"
+                                        className="inline-flex w-full justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:col-start-2 sm:text-sm"
+                                        onClick={async () => {
+                                            await postData();
+                                            setIsOpen(false);
+                                        }}
+                                    >
+                                        Update Shift
                                     </button>
                                 </div>
                             </Dialog.Panel>

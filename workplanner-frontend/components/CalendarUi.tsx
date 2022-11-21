@@ -183,6 +183,7 @@ function CalendarUi() {
 
         for (const shift of usersShifts) {
             allVagter.push(vagter = {
+                id : shift.id,
                 title: `${shift.employeeFirstName}`,
                 startTime: new Date(shift.startTime),
                 endTime: new Date(shift.endTime),

@@ -7,6 +7,7 @@ import {Calendar, dateFnsLocalizer} from "react-big-calendar";
 import {format, getDay, parse, startOfWeek} from "date-fns";
 import {CaEvent} from "../models/CaEvent";
 import ModalShift from "./ModalShift";
+import ModalEdit from "./ModalEdit";
 
 
 
@@ -16,7 +17,9 @@ function WpCalendar() {
     const [departmentId, setDepartmentId] = useState<string>()
     const [allDepartments, setAllDepartments] = useState<Department[]>()
     const [allEvents, setAllEvents] = useState<CaEvent[]>()
-    const [isOpen, setIsOpen] = useState<boolean>(false)
+    const [isOpenShift, setIsOpenShift] = useState<boolean>(false)
+    const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false)
+    const [selectedEvent, setSelectedAllEvent] = useState<CaEvent>()
 
 
     useEffect(() => {
@@ -25,7 +28,7 @@ function WpCalendar() {
 
     useEffect(() => {
         getShiftData()
-    }, [departmentId]);
+    }, [departmentId, isOpenEdit,isOpenShift]);
 
 
     const locales = {
@@ -41,6 +44,12 @@ function WpCalendar() {
         getDay,
         locales
     })
+
+    const handleSelected = (event: React.SetStateAction<CaEvent | undefined>) => {
+            setSelectedAllEvent(event);
+            console.log(event)
+            setIsOpenEdit(true)
+    };
 
 
     const getData = async () => {
@@ -74,6 +83,7 @@ function WpCalendar() {
 
             for (const shift of departmentShifts) {
                 allVagter.push(vagter = {
+                    id: shift.id,
                     title: `${shift.employeeFirstName}`,
                     startTime: new Date(shift.startTime),
                     endTime: new Date(shift.endTime),
@@ -86,14 +96,13 @@ function WpCalendar() {
 
     }
 
-
     return (
         <>
             <div>
                 <div className=" m-10">
                     <div className="my-5">
                         <button
-                            onClick={() => setIsOpen(true)}
+                            onClick={() => setIsOpenShift(true)}
                             type="button"
                             className=" rounded border border-transparent bg-blue-600 px-6 py-3 text-xs font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                         >
@@ -117,12 +126,13 @@ function WpCalendar() {
                     </div>
 
                     <Calendar localizer={localize} events={allEvents}
-                              startAccessor="startTime" endAccessor="endTime" style={{height: 500}}  >
+                             selected={selectedEvent} startAccessor="startTime" endAccessor="endTime" style={{height: 500}} onSelectEvent={(event) => {handleSelected(event);}}>
 
                     </Calendar>
                 </div>
             </div>
-            <ModalShift isOpen={isOpen} setIsOpen={setIsOpen}/>
+            <ModalShift isOpen={isOpenShift} setIsOpen={setIsOpenShift}/>
+            <ModalEdit shiftData={selectedEvent} isOpen={isOpenEdit} setIsOpen={setIsOpenEdit} />
         </>
     );
 }
