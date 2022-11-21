@@ -23,7 +23,6 @@ export default function ModalEdit({isOpen, setIsOpen, shiftData}: {shiftData: Ca
     const [shift, setShift] = useState<Shift>()
     const [startValue, setStartValue] = useState<Date | null>(new Date());
     const [endValue, setEndValue] = useState<Date | null>(new Date());
-    const [employeeNumber, setEmployeeNumber] = useState<string>("")
 
     const handleStartTime = (newValue: Date | null) => {
         setStartValue(newValue);

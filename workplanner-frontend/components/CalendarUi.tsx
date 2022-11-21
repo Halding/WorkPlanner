@@ -7,7 +7,6 @@ import {Employee} from "../models/Employee";
 import {getCookie} from "./Login";
 import {Shift} from "../models/Shift";
 import {CaEvent} from "../models/CaEvent";
-import DatePicker from "react-datepicker";
 
 
 const locales = {
@@ -84,7 +83,6 @@ function CalendarUi() {
                 console.log(updatedShift)
                 return updatedShift.data
             }
-
         }
     }
 
@@ -100,13 +98,13 @@ function CalendarUi() {
         if (onGoingShift != undefined) {
 
             onGoingShift.clockInTime = new Date()
-            console.log(onGoingShift)
+
             const {data: updatedShift} = await axios.patch(`http://localhost:5293/api/shift/update/${onGoingShift?.id}`, onGoingShift, {
                 headers: {
                     Authorization: "Bearer " + jwt
                 }
             });
-            console.log(updatedShift)
+
             return updatedShift.data;
 
         } else {
@@ -123,19 +121,14 @@ function CalendarUi() {
                         Authorization: "Bearer " + jwt
                     }
                 });
-                console.log(updatedShift)
+
                 return updatedShift.data
             }
 
-            console.log("asd")
-            console.log(foundNextShift)
-            console.log("asd")
         }
     }
 
     const status = async () => {
-
-        const jwt = getCookie("OurJwt")
 
         const testDate = new Date('2022-11-15T10:03:23.403+00:00')
         const onGoingShift = allShifts?.find(element => new Date(element.startTime) <= testDate && new Date(element.endTime) >= testDate)
@@ -143,9 +136,6 @@ function CalendarUi() {
         if (onGoingShift != undefined) {
             setShiftStatus(onGoingShift)
 
-            console.log("yo1")
-            console.log(onGoingShift)
-            console.log("yo1")
         } else {
 
             const sortedArr = allShifts?.sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
@@ -154,11 +144,6 @@ function CalendarUi() {
                 return new Date(date.startTime).getTime() > testDate.getTime()
             })
             setShiftStatus(foundNextShift)
-
-            console.log("yo3")
-            console.log(foundNextShift)
-            console.log("yo3")
-
         }
     }
 
@@ -183,7 +168,7 @@ function CalendarUi() {
 
         for (const shift of usersShifts) {
             allVagter.push(vagter = {
-                id : shift.id,
+                id: shift.id,
                 title: `${shift.employeeFirstName}`,
                 startTime: new Date(shift.startTime),
                 endTime: new Date(shift.endTime),
@@ -195,12 +180,6 @@ function CalendarUi() {
         setEmployee(employeeFromToken)
         setAllEvents(allVagter)
         setAllShifts(usersShifts)
-
-
-        console.log("yo4")
-        console.log(usersShifts)
-        console.log("yo4")
-
     };
 
 
@@ -263,11 +242,7 @@ function CalendarUi() {
                             </div>
                         </div>
                     </div>
-
-
                 </div>
-
-
                 <div>
                     <Calendar localizer={localize} events={allEvents}
                               startAccessor="startTime" endAccessor="endTime" style={{height: 500}}>

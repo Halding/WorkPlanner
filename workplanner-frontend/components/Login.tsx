@@ -1,9 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Employee} from "../models/Employee";
 import {useRouter} from "next/router";
-import Head from "next/head";
 import axios from "axios";
-import {NextRequest} from "next/server";
 
 
 export function getCookie(name: string) {
@@ -69,17 +67,6 @@ function Login() {
 
     };
 
-    const handleGetUser = async () => {
-        const user = await axios.get("/api/user");
-
-        console.log(user);
-    };
-
-    const handleLogOut = async () => {
-        const user = await axios.get("/api/auth/logout");
-
-        console.log(user);
-    };
 
 
     return (

@@ -4,10 +4,8 @@ import {
     QueryClient,
     QueryClientProvider,
 } from '@tanstack/react-query'
-import {SessionProvider} from "next-auth/react";
 import { RecoilRoot } from 'recoil';
 import {Session} from "next-auth";
-// date-fns
 const queryClient = new QueryClient()
 
 function MyApp({
@@ -17,7 +15,6 @@ function MyApp({
     session: Session;
 }>) {
     return (
-        // <SessionProvider session={pageProps.session}>
             <QueryClientProvider client={queryClient}>
                 <RecoilRoot>
 
@@ -25,7 +22,6 @@ function MyApp({
 
                 </RecoilRoot>
             </QueryClientProvider>
-        // </SessionProvider>
     )
 
 

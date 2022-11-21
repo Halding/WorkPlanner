@@ -1,8 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { Dialog, Menu, Transition } from '@headlessui/react';
 import {
-    Bars3CenterLeftIcon,
-    BellIcon, CalendarDaysIcon,
+    CalendarDaysIcon,
     CogIcon,
     HomeIcon,
     UserGroupIcon,
@@ -10,15 +9,12 @@ import {
 } from '@heroicons/react/24/outline';
 import {
     ArrowLeftOnRectangleIcon,
-    ChevronDownIcon,
 } from '@heroicons/react/20/solid';
 import {useRouter} from "next/router";
 import Link from 'next/link';
 import { HeroIcon } from '../types/heroIcon';
 import { useRecoilValue } from 'recoil'
 import { notificationsState } from "../recoil/atoms/notificationsAtom";
-import { RenderNotification } from '../hooks/useNotifications';
-import { AnimatePresence, motion } from 'framer-motion';
 import { useTranslation } from 'next-i18next';
 import { classNames } from '../utils/classNames';
 
