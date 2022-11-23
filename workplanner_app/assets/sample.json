@@ -1,0 +1,62 @@
+[
+    {
+        "id": 25,
+        "startTime": "2022-12-09T07:00:00+00:00",
+        "endTime": "2022-12-09T15:00:00+00:00",
+        "clockInTime": null,
+        "clockOutTime": null,
+        "employeeId": 6,
+        "departmentId": 7,
+        "employeeFirstName": "Alex",
+        "employeeLastName": "Madsen",
+        "employeeNumber": 1065
+    },
+    {
+        "id": 28,
+        "startTime": "2022-12-05T09:00:00+00:00",
+        "endTime": "2022-12-05T17:00:00+00:00",
+        "clockInTime": null,
+        "clockOutTime": null,
+        "employeeId": 6,
+        "departmentId": 7,
+        "employeeFirstName": "Alex",
+        "employeeLastName": "Madsen",
+        "employeeNumber": 1065
+    },
+    {
+        "id": 29,
+        "startTime": "2022-12-06T09:00:00+00:00",
+        "endTime": "2022-12-06T17:00:00+00:00",
+        "clockInTime": null,
+        "clockOutTime": null,
+        "employeeId": 6,
+        "departmentId": 7,
+        "employeeFirstName": "Alex",
+        "employeeLastName": "Madsen",
+        "employeeNumber": 1065
+    },
+    {
+        "id": 30,
+        "startTime": "2022-12-07T09:00:00+00:00",
+        "endTime": "2022-12-07T17:00:00+00:00",
+        "clockInTime": null,
+        "clockOutTime": null,
+        "employeeId": 6,
+        "departmentId": 7,
+        "employeeFirstName": "Alex",
+        "employeeLastName": "Madsen",
+        "employeeNumber": 1065
+    },
+    {
+        "id": 31,
+        "startTime": "2022-12-08T09:00:00+00:00",
+        "endTime": "2022-12-08T17:00:00+00:00",
+        "clockInTime": null,
+        "clockOutTime": null,
+        "employeeId": 6,
+        "departmentId": 7,
+        "employeeFirstName": "Alex",
+        "employeeLastName": "Madsen",
+        "employeeNumber": 1065
+    }
+]
