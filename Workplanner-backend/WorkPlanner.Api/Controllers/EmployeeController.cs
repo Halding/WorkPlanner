@@ -12,7 +12,7 @@ using Workplanner_Core.Models;
 
 namespace WorkPlanner.Api.Controllers
 {
-    [Authorize]
+    // [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase

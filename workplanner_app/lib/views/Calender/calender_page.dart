@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import '../models/post.dart';
-import '../models/shift.dart';
-import '../services/remote_service.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+import '../../models/post.dart';
+import '../../models/shift.dart';
+import '../../services/remote_service.dart';
+
+class CalenderPage extends StatefulWidget {
+  const CalenderPage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<CalenderPage> createState() => _CalenderPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _CalenderPageState extends State<CalenderPage> {
   List<Post>? posts;
   List<Shift>? shifts;
   var isLoadedPost = false;
@@ -57,15 +58,14 @@ class _HomePageState extends State<HomePage> {
     final DateTime startTime =
         DateTime(today.year, today.month, today.day, 9, 0, 0);
     final DateTime endTime = startTime.add(const Duration(hours: 2));
-    
 
     if (shifts != null) {
       for (var shift in shifts!) {
         meetings.add(Appointment(
-        startTime: shift.startTime,
-        endTime: shift.endTime,
-        subject: "${shift.employeeFirstName}",
-        color: Colors.blue));
+            startTime: shift.startTime,
+            endTime: shift.endTime,
+            subject: "${shift.employeeFirstName}",
+            color: Color(0xFF2196F3)));
       }
     }
 
