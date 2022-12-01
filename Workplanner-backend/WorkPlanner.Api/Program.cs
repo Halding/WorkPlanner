@@ -51,9 +51,9 @@ builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<IShiftService, ShiftService>();
 builder.Services.AddScoped<IShiftRepository, ShiftRepository>();
 
-builder.Services.AddDataProtection()
-    .PersistKeysToAzureBlobStorage(new Uri("<blobUriWithSasToken>"))
-    .ProtectKeysWithAzureKeyVault(new Uri("<keyIdentifier>"), new DefaultAzureCredential());
+// builder.Services.AddDataProtection()
+//     .PersistKeysToAzureBlobStorage(new Uri("<blobUriWithSasToken>"))
+//     .ProtectKeysWithAzureKeyVault(new Uri("<keyIdentifier>"), new DefaultAzureCredential());
 
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
