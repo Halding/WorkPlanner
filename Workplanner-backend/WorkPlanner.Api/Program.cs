@@ -1,6 +1,7 @@
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using Azure.Identity;
 using MicroElements.Swashbuckle.NodaTime;
 using Microsoft.EntityFrameworkCore;
 using Workplanner_Core.IServices;
@@ -9,6 +10,7 @@ using Workplanner_DataAccess.Repositories;
 using Workplanner_Domain.IRepositories;
 using Workplanner_Domain.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NodaTime;
@@ -35,7 +37,7 @@ void ConfigureSystemTextJsonSerializerSettings(JsonSerializerOptions serializerO
 
 builder.Services.AddDbContext<MainDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AzureConnection"));
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -48,6 +50,11 @@ builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<IShiftService, ShiftService>();
 builder.Services.AddScoped<IShiftRepository, ShiftRepository>();
+
+builder.Services.AddDataProtection()
+    .PersistKeysToAzureBlobStorage(new Uri("<blobUriWithSasToken>"))
+    .ProtectKeysWithAzureKeyVault(new Uri("<keyIdentifier>"), new DefaultAzureCredential());
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
