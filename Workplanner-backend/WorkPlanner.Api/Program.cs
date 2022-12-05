@@ -87,7 +87,7 @@ app.UseCors(o => o
     .AllowAnyMethod()
     .AllowAnyHeader()
     .AllowCredentials()
-    .WithOrigins("http://localhost:3000")
+    .WithOrigins("http://localhost:3000","https://wp-frontend.onrender.com")
 );
 
 app.UseAuthentication();
