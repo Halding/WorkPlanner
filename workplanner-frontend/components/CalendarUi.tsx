@@ -57,7 +57,7 @@ function CalendarUi() {
             onGoingShift.clockOutTime = new Date()
             setLastShift(onGoingShift)
             console.log(onGoingShift)
-            const {data: updatedShift} = await axios.patch(`http://localhost:5293/api/shift/update/${onGoingShift?.id}`, onGoingShift, {
+            const {data: updatedShift} = await axios.patch(`${process.env.NEXT_PUBLIC_BASEURL}shift/update/${onGoingShift?.id}`, onGoingShift, {
                 headers: {
                     Authorization: "Bearer " + jwt
                 }
@@ -75,7 +75,7 @@ function CalendarUi() {
             if (foundLastShift && foundLastShift.clockInTime != null) {
                 foundLastShift.clockOutTime = new Date()
                 setLastShift(foundLastShift)
-                const {data: updatedShift} = await axios.patch(`http://localhost:5293/api/shift/update/${foundLastShift?.id}`, foundLastShift, {
+                const {data: updatedShift} = await axios.patch(`${process.env.NEXT_PUBLIC_BASEURL}shift/update/${foundLastShift?.id}`, foundLastShift, {
                     headers: {
                         Authorization: "Bearer " + jwt
                     }
@@ -99,7 +99,7 @@ function CalendarUi() {
 
             onGoingShift.clockInTime = new Date()
 
-            const {data: updatedShift} = await axios.patch(`http://localhost:5293/api/shift/update/${onGoingShift?.id}`, onGoingShift, {
+            const {data: updatedShift} = await axios.patch(`${process.env.NEXT_PUBLIC_BASEURL}shift/update/${onGoingShift?.id}`, onGoingShift, {
                 headers: {
                     Authorization: "Bearer " + jwt
                 }
@@ -116,7 +116,7 @@ function CalendarUi() {
 
             if (foundNextShift) {
                 foundNextShift.clockInTime = new Date()
-                const {data: updatedShift} = await axios.patch(`http://localhost:5293/api/shift/update/${foundNextShift?.id}`, foundNextShift, {
+                const {data: updatedShift} = await axios.patch(`${process.env.NEXT_PUBLIC_BASEURL}shift/update/${foundNextShift?.id}`, foundNextShift, {
                     headers: {
                         Authorization: "Bearer " + jwt
                     }
@@ -151,13 +151,13 @@ function CalendarUi() {
 
         const jwt = getCookie("OurJwt")
 
-        const {data: usersShifts} = await axios.get(`https://localhost:7293/api/shift/employeeId`, {
+        const {data: usersShifts} = await axios.get(`${process.env.NEXT_PUBLIC_BASEURL}shift/employeeId`, {
             headers: {
                 Authorization: "Bearer " + jwt
             }
         })
 
-        const {data: employeeFromToken} = await axios.get(`https://localhost:7293/api/employee/user`, {
+        const {data: employeeFromToken} = await axios.get(`${process.env.NEXT_PUBLIC_BASEURL}employee/user`, {
             headers: {
                 Authorization: "Bearer " + jwt
             }

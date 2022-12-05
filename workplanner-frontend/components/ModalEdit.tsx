@@ -56,7 +56,7 @@ export default function ModalEdit({isOpen, setIsOpen, shiftData}: {shiftData: Ca
                 departmentId: shift.departmentId
 
             }
-            const {data: createdShift} = await axios.patch(`http://localhost:5293/api/shift/update/${shift.id}`,testShift, {
+            const {data: createdShift} = await axios.patch(`${process.env.NEXT_PUBLIC_BASEURL}shift/update/${shift.id}`,testShift, {
                 headers: {
                     Authorization: "Bearer " + jwt
                 }
@@ -82,7 +82,7 @@ export default function ModalEdit({isOpen, setIsOpen, shiftData}: {shiftData: Ca
                 departmentId: shift.departmentId
 
             }
-            const {data: createdShift} = await axios.delete(`http://localhost:5293/api/shift/delete/${shift.id}`,{
+            const {data: createdShift} = await axios.delete(`${process.env.NEXT_PUBLIC_BASEURL}shift/delete/${shift.id}`,{
                 headers: {
                     Authorization: "Bearer " + jwt
                 }
@@ -97,7 +97,7 @@ export default function ModalEdit({isOpen, setIsOpen, shiftData}: {shiftData: Ca
         const jwt = getCookie("OurJwt")
 
         if (shiftData) {
-            const {data: shiftFromId} = await axios.get(`https://localhost:7293/api/shift/${shiftData.id}`, {
+            const {data: shiftFromId} = await axios.get(`${process.env.NEXT_PUBLIC_BASEURL}shift/${shiftData.id}`, {
                 headers: {
                     Authorization: "Bearer " + jwt
                 }

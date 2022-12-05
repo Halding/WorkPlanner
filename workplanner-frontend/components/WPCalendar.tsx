@@ -57,7 +57,7 @@ function WpCalendar() {
 
         const jwt = getCookie("OurJwt")
 
-        const {data: newAllDepartments} = await axios.get(`https://localhost:7293/api/Department`, {
+        const {data: newAllDepartments} = await axios.get(`${process.env.NEXT_PUBLIC_BASEURL}Department`, {
             headers: {
                 Authorization: "Bearer " + jwt
             }
@@ -72,7 +72,7 @@ function WpCalendar() {
 
 
         if (departmentId != null) {
-            const {data: departmentShifts} = await axios.get(`https://localhost:7293/api/shift/department/${departmentId}`, {
+            const {data: departmentShifts} = await axios.get(`${process.env.NEXT_PUBLIC_BASEURL}shift/department/${departmentId}`, {
                 headers: {
                     Authorization: "Bearer " + jwt
                 }

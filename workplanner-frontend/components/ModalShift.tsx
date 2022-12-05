@@ -37,7 +37,7 @@ export default function ModalShift({isOpen, setIsOpen}: { isOpen: boolean, setIs
     const getData = async () => {
         const jwt = getCookie("OurJwt")
 
-        const {data: employeeFromEmployeeNumber} = await axios.get(`https://localhost:7293/api/employee/employeeNumber/${employeeNumber}`, {
+        const {data: employeeFromEmployeeNumber} = await axios.get(`${process.env.NEXT_PUBLIC_BASEURL}employee/employeeNumber/${employeeNumber}`, {
             headers: {
                 Authorization: "Bearer " + jwt
             }
@@ -59,7 +59,7 @@ export default function ModalShift({isOpen, setIsOpen}: { isOpen: boolean, setIs
                 employeeId : employee.id,
                 departmentId: employee.departmentId
             }
-            const {data: createdShift} = await axios.post(`http://localhost:5293/api/shift/create`,testShift, {
+            const {data: createdShift} = await axios.post(`${process.env.NEXT_PUBLIC_BASEURL}shift/create`,testShift, {
                 headers: {
                     Authorization: "Bearer " + jwt
                 }

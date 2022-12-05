@@ -41,7 +41,7 @@ function Login() {
         const credentials = {employeeNumber, password};
         console.log(credentials)
 
-        const login = await axios.post("http://localhost:5293/api/Auth/login", credentials, {withCredentials: true});
+        const login = await axios.post(`${process.env.NEXT_PUBLIC_BASEURL}employee/employeeNumber/${employeeNumber}`, credentials, {withCredentials: true});
 
 
         console.log(login)
@@ -51,7 +51,7 @@ function Login() {
         console.log("test");
 
 
-        const {data: employeeGotByEmployeeNumber} = await axios.get(`http://localhost:5293/api/employee/employeeNumber/${employeeNumber}`, {
+        const {data: employeeGotByEmployeeNumber} = await axios.get(`${process.env.NEXT_PUBLIC_BASEURL}employee/employeeNumber/${employeeNumber}`, {
             headers: {
                 Authorization: "Bearer " + jwt
             }
@@ -62,7 +62,7 @@ function Login() {
         if (login.status === 200) {
 
 
-            await router.push("http://localhost:3000/dashboard/overview")
+            await router.push(`${process.env.NEXT_PUBLIC_CLEAN_URL}dashboard/overview`)
         }
 
     };
