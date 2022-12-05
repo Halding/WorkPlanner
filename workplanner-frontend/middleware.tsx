@@ -9,7 +9,7 @@ export default function middleware(req : NextRequest) {
 
 
     if (!jwt && url.includes("/dashboard")) {
-        return NextResponse.redirect("http://localhost:3000/");
+        return NextResponse.redirect(`${process.env.NEXT_PUBLIC_CLEAN_URL}`);
     }
     if (jwt) {
 
@@ -17,7 +17,7 @@ export default function middleware(req : NextRequest) {
         const timeNowSec = Math.round(Date.now() / 1000);
 
         if (jwtExpire.exp < Math.round(Date.now() / 1000) && url.includes("/dashboard")) {
-            return NextResponse.redirect("http://localhost:3000/");
+            return NextResponse.redirect(`${process.env.NEXT_PUBLIC_CLEAN_URL}`);
         }
 
     }
