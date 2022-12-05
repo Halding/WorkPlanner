@@ -41,7 +41,7 @@ function Login() {
         const credentials = {employeeNumber, password};
         console.log(credentials)
 
-        const login = await axios.post(`${process.env.NEXT_PUBLIC_BASEURL}employee/employeeNumber/${employeeNumber}`, credentials, {withCredentials: true});
+        const login = await axios.post(`${process.env.NEXT_PUBLIC_BASEURL}Auth/login`, credentials, {withCredentials: true});
 
 
         console.log(login)
