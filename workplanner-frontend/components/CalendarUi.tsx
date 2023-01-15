@@ -31,24 +31,23 @@ function CalendarUi() {
     const [allShifts, setAllShifts] = useState<Shift[]>()
     const [shiftStatus, setShiftStatus] = useState<Shift>()
     const [lastShift, setLastShift] = useState<Shift>()
+    const [clockInShift, setClockInShift] = useState<Shift>()
 
     useEffect(() => {
         getUserShifts()
-        handleClockOut()
-        handleClockIn()
     }, []);
 
     useEffect(() => {
         status()
 
-    }, [allShifts, shiftStatus, lastShift]);
+    }, [allShifts, shiftStatus, lastShift, clockInShift]);
 
 
     const handleClockOut = async () => {
 
         const jwt = getCookie("OurJwt")
 
-        const testDate = new Date('2022-11-15T10:03:23.403+00:00')
+        const testDate = new Date()
 
         const onGoingShift = allShifts?.find(element => new Date(element.startTime) <= testDate && new Date(element.endTime) >= testDate)
 
@@ -91,7 +90,7 @@ function CalendarUi() {
 
         const jwt = getCookie("OurJwt")
 
-        const testDate = new Date('2022-11-15T10:03:23.403+00:00')
+        const testDate = new Date()
 
         const onGoingShift = allShifts?.find(element => new Date(element.startTime) <= testDate && new Date(element.endTime) >= testDate)
 
@@ -104,7 +103,7 @@ function CalendarUi() {
                     Authorization: "Bearer " + jwt
                 }
             });
-
+            setClockInShift(updatedShift.data)
             return updatedShift.data;
 
         } else {
@@ -121,7 +120,7 @@ function CalendarUi() {
                         Authorization: "Bearer " + jwt
                     }
                 });
-
+                setClockInShift(updatedShift.data)
                 return updatedShift.data
             }
 
@@ -130,7 +129,7 @@ function CalendarUi() {
 
     const status = async () => {
 
-        const testDate = new Date('2022-11-15T10:03:23.403+00:00')
+        const testDate = new Date()
         const onGoingShift = allShifts?.find(element => new Date(element.startTime) <= testDate && new Date(element.endTime) >= testDate)
 
         if (onGoingShift != undefined) {

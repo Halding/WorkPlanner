@@ -143,25 +143,8 @@ public class EmployeeRepository : IEmployeeRepository
 
         return null;
     }
-
-    // public JwtSecurityToken ValidateTokenByJwt(string jwt)
-    // {
-    //     var tokenHandler = new JwtSecurityTokenHandler();
-    //     var key = Encoding.ASCII.GetBytes("AppSettings:Token");
-    //
-    //     tokenHandler.ValidateToken(jwt, new TokenValidationParameters
-    //     {
-    //         IssuerSigningKey = new SymmetricSecurityKey(key),
-    //         ValidateIssuerSigningKey = true,
-    //         ValidateIssuer = false,
-    //         ValidateAudience = false
-    //         
-    //     }, out SecurityToken validatedToken);
-    //     
-    //     return (JwtSecurityToken) validatedToken;
-    // }
-
-
+    
+    
     private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
     {
         using (var hmac = new HMACSHA512())

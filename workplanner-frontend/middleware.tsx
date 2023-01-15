@@ -16,7 +16,7 @@ export default function middleware(req : NextRequest) {
         const jwtExpire = JSON.parse(atob(jwt.split('.')[1]));
         const timeNowSec = Math.round(Date.now() / 1000);
 
-        if (jwtExpire.exp < Math.round(Date.now() / 1000) && url.includes("/dashboard")) {
+        if (jwtExpire.exp < timeNowSec && url.includes("/dashboard")) {
             return NextResponse.redirect("http://localhost:3000/");
         }
 

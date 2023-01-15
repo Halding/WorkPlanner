@@ -30,7 +30,6 @@ public class AuthRepository : IAuthRepository
     {
         var response = new ServiceResponse<string>();
         var employee = await _ctx.Employees.FirstOrDefaultAsync(x => x.EmployeeNumber.Equals(employeeNumber));
-        Console.WriteLine("testtesttesttest");
         Console.WriteLine(employee.EmployeeNumber);
 
 
@@ -55,19 +54,6 @@ public class AuthRepository : IAuthRepository
 
     private string? CreateToken(EmployeeEntity employee)
     {
-        // var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token:Key").Value));
-        //
-        // var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-        //
-        // var header = new JwtHeader(creds);
-        //
-        // var payload = new JwtPayload(employee.Id.ToString(), null, null, null, DateTime.Now.AddMinutes(5));
-        // var securityToken = new JwtSecurityToken(header, payload);
-        //
-        // return new JwtSecurityTokenHandler().WriteToken(securityToken);
-
-
-        //create claims details based on the user information
         var claims = new[]
         {
             new Claim(JwtRegisteredClaimNames.Sub, _configuration["AppSettings:Token:Subject"]),
@@ -100,28 +86,5 @@ public class AuthRepository : IAuthRepository
     }
 
 
-    private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-    {
-        using (var hmac = new HMACSHA512())
-        {
-            passwordSalt = hmac.Key;
-            passwordHash = hmac
-                .ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-        }
-    }
-
-    private JwtSecurityToken VerifyKey(string jwt)
-    {
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes("AppSettings:Token:Key");
-
-        tokenHandler.ValidateToken(jwt, new TokenValidationParameters
-        {
-            IssuerSigningKey = new SymmetricSecurityKey(key),
-            ValidateIssuerSigningKey = true,
-            ValidateIssuer = false,
-            ValidateAudience = false,
-        }, out SecurityToken validatedToken);
-        return (JwtSecurityToken)validatedToken;
-    }
+    
 }
